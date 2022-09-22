@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md window-height">
     <div class="row justify-center full-height items-center">
-      <div class="col-4">
+      <div class="col-xs-10 col-sm-8 col-md-4">
         <q-icon
           class="text-center full-width"
           size="5em"
@@ -68,7 +68,7 @@ import { axios } from 'boot/axios';
 import { ref } from 'vue';
 
 export default {
-  name: 'Login-page',
+  name: 'LoginPage',
   setup() {
     const email = ref(null);
     const password = ref(null);
@@ -86,6 +86,7 @@ export default {
       axios.defaults.headers.common['Authorization'] =
         'Bearer ' + data.access_token;
 
+      console.log(data);
       await router.push('/menu');
     };
 
