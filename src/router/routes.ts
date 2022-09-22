@@ -3,8 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Home.vue') }],
+    component: () => import('pages/common/Login.vue'),
   },
   {
     path: '/login',
@@ -13,6 +12,35 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/menu',
     component: () => import('pages/common/AppsMenu.vue'),
+  },
+  {
+    path: '/demands',
+    component: () => import('layouts/DemandLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/demand/DemandsList.vue') },
+      {
+        path: 'config',
+        component: () => import('pages/demand/DemandConfig.vue'),
+      },
+    ],
+  },
+  {
+    path: '/property',
+    component: () => import('layouts/PropertyLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/property/PropertyList.vue'),
+      },
+      {
+        path: 'config',
+        component: () => import('pages/property/PropertyConfig.vue'),
+      },
+    ],
+  },
+  {
+    path: '/test',
+    component: () => import('pages/Test.vue'),
   },
 
   // Always leave this as last one,
