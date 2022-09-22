@@ -1,20 +1,11 @@
 <template>
-  <q-item
-    clickable
-    tag="a"
-    target="_blank"
-    :href="link"
-  >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
+  <q-item clickable :to="link" exact>
+    <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>{{ caption }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -27,23 +18,18 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      required: true
-    },
-
-    caption: {
-      type: String,
-      default: ''
+      required: true,
     },
 
     link: {
       type: String,
-      default: '#'
+      default: '#',
     },
 
     icon: {
       type: String,
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
 });
 </script>
