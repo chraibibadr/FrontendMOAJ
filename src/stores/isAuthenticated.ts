@@ -5,7 +5,7 @@ export const useIsAuthenticated = defineStore('isAuthenticated', {
   state: () => ({
     isAuthenticated: false,
     isAdmin: false,
-    permissions: ['', ''],
+    permissions: [''],
     username: '',
   }),
 
@@ -27,6 +27,12 @@ export const useIsAuthenticated = defineStore('isAuthenticated', {
   actions: {
     setIsAuthenticated(remplacement: boolean) {
       this.isAuthenticated = remplacement;
+    },
+    setIsAdmin(remplacement: boolean) {
+      this.isAdmin = remplacement;
+    },
+    setPermissions(remplacement: string[]) {
+      this.permissions = remplacement;
     },
     setUsername(remplacement: string) {
       this.username = remplacement;
