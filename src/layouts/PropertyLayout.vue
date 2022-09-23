@@ -55,7 +55,7 @@
                 </q-avatar>
 
                 <div class="q-mt-xs q-mb-md text-center text-weight-medium">
-                  @{{ username }}
+                  @{{ storeObject.username }}
                 </div>
 
                 <q-btn
@@ -96,6 +96,8 @@ import { defineComponent, onMounted, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
 import { axios } from 'boot/axios';
 import { useRouter } from 'vue-router';
+import { useIsAuthenticated } from 'src/stores/isAuthenticated';
+import { storeToRefs } from 'pinia';
 
 const linksList = [
   {
@@ -111,7 +113,7 @@ const linksList = [
   {
     title: 'Les applications',
     icon: 'widgets',
-    link: '/menu',
+    link: '/',
   },
 ];
 
@@ -123,14 +125,9 @@ export default defineComponent({
   },
 
   setup() {
-    const username = ref(null);
     const router = useRouter();
-
-    onMounted(async () => {
-      const { data } = await axios.post('auth/user');
-      console.log(data);
-      username.value = data.matricule.toUpperCase();
-    });
+    const store = useIsAuthenticated();
+    const storeObject = storeToRefs(store);
 
     const leftDrawerOpen = ref(false);
 
@@ -138,6 +135,8 @@ export default defineComponent({
     const logout = async () => {
       await axios.post('auth/logout', {}, { withCredentials: true });
       axios.defaults.headers.common['Authorization'] = '';
+      console.log('set to false from property');
+      store.setIsAuthenticated(false);
       await router.push('/login');
     };
 
@@ -147,9 +146,7 @@ export default defineComponent({
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
-      mobileData: ref(true),
-      bluetooth: ref(false),
-      username,
+      storeObject,
       logout,
       link: ref('inbox'),
     };

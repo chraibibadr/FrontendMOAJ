@@ -22,9 +22,9 @@
         class="col-xs-12 col-sm-6 col-md-3"
         v-if="role || permissions.includes('App2')"
       >
-        <q-btn class="fit" color="blue" stack to="demands">
-          <q-icon size="8em" name="desk" />
-          <div>Bureau de contrôle</div>
+        <q-btn class="fit" color="blue" stack>
+          <q-icon size="8em" name="inventory" />
+          <div>Stock</div>
         </q-btn>
       </div>
       <div
@@ -40,9 +40,9 @@
         class="col-xs-12 col-sm-6 col-md-3"
         v-if="role || permissions.includes('App4')"
       >
-        <q-btn class="fit" color="blue" stack>
-          <q-icon size="8em" name="inventory" />
-          <div>Stock</div>
+        <q-btn class="fit" color="blue" stack to="demands">
+          <q-icon size="8em" name="desk" />
+          <div>Bureau de contrôle</div>
         </q-btn>
       </div>
     </div>
@@ -50,23 +50,17 @@
 </template>
 
 <script>
-import { axios } from 'boot/axios';
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useIsAuthenticated } from 'stores/isAuthenticated';
+import { storeToRefs } from 'pinia';
 
 export default {
   name: 'AppsMenu',
 
   setup() {
-    const permissions = ref('');
-    const role = ref('');
-    const router = useRouter();
-
-    onMounted(async () => {
-      const { data } = await axios.post('auth/user');
-      permissions.value = data.permissions;
-      role.value = data.role == 'admin';
-    });
+    const store = useIsAuthenticated();
+    const storeObject = storeToRefs(store);
+    const permissions = storeObject.getPermissions;
+    const role = storeObject.getIsAdmin;
 
     return {
       permissions,
