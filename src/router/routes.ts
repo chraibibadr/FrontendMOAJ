@@ -16,6 +16,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/demands',
     meta: {
+      title: 'Bureau de contrôle',
       isAuthenticated: true,
       App4: true,
     },
@@ -36,6 +37,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/property',
     meta: {
+      title: 'Les propriétés privé/publique',
       isAuthenticated: true,
       App3: true,
     },
@@ -57,8 +59,7 @@ const routes: RouteRecordRaw[] = [
     path: '/test',
     name: 'test',
     meta: {
-      isAuthenticated: true,
-      isAdmin: true,
+      title: 'test page',
     },
     component: () => import('pages/Test.vue'),
   },

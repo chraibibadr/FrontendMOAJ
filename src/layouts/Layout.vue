@@ -11,7 +11,9 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Gestion des stocks </q-toolbar-title>
+        <q-toolbar-title>
+          {{ route.meta.title || 'Gestion des stocks' }}
+        </q-toolbar-title>
         <q-btn flat round icon="person">
           <q-menu transition-show="jump-down" transition-hide="scale">
             <div class="row no-wrap q-pa-md justify-center items-center">
