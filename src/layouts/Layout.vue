@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Propriétés privé/publique </q-toolbar-title>
+        <q-toolbar-title> Gestion des stocks </q-toolbar-title>
         <q-btn flat round icon="person">
           <q-menu transition-show="jump-down" transition-hide="scale">
             <div class="row no-wrap q-pa-md justify-center items-center">
@@ -74,15 +74,30 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Menu </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+      <q-scroll-area class="fit">
+        <q-list>
+          <q-item-label header> Menu </q-item-label>
+          <template v-for="(menuItem, index) in linksList" :key="index">
+            <q-item
+              :to="menuItem.link"
+              exact
+              clickable
+              v-ripple
+              v-if="
+                route.path.includes(menuItem.context) || menuItem.context == '/'
+              "
+            >
+              <q-item-section avatar>
+                <q-icon :name="menuItem.icon" />
+              </q-item-section>
+              <q-item-section>
+                {{ menuItem.label }}
+              </q-item-section>
+            </q-item>
+            <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+          </template>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
@@ -92,44 +107,60 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
+import { ref } from 'vue';
 import { useIsAuthenticated } from 'src/stores/isAuthenticated';
 import { logout } from 'boot/functions';
+import { useRoute } from 'vue-router';
 
 const linksList = [
   {
-    title: 'Les propriétés',
+    context: 'demand',
+    label: 'Les demandes',
+    icon: 'topic',
+    link: '/demands',
+    separator: false,
+  },
+  {
+    context: 'demand',
+    label: 'Configuration',
+    icon: 'settings',
+    link: '/demands/config',
+    separator: true,
+  },
+  {
+    context: 'property',
+    label: 'Les propriétés',
     icon: 'real_estate_agent',
     link: '/property',
+    separator: false,
   },
   {
-    title: 'Configuration',
+    context: 'property',
+    label: 'Configuration',
     icon: 'settings',
-    link: '/property/config',
+    link: '/demands/config',
+    separator: true,
   },
   {
-    title: 'Les applications',
+    context: '/',
+    label: 'Les applications',
     icon: 'widgets',
     link: '/',
+    separator: false,
   },
 ];
 
-export default defineComponent({
-  name: 'PropertyLayout',
-
-  components: {
-    EssentialLink,
-  },
-
+export default {
+  name: 'DemandLayout',
   setup() {
     const store = useIsAuthenticated();
     const username = store.getUsername;
+    const route = useRoute();
 
     const leftDrawerOpen = ref(false);
 
     return {
-      essentialLinks: linksList,
+      linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -137,7 +168,8 @@ export default defineComponent({
       username,
       logout,
       link: ref(null),
+      route,
     };
   },
-});
+};
 </script>

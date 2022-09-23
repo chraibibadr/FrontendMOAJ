@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
       isAuthenticated: true,
       App4: true,
     },
-    component: () => import('layouts/DemandLayout.vue'),
+    component: () => import('layouts/Layout.vue'),
     children: [
       {
         path: '',
@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
       isAuthenticated: true,
       App3: true,
     },
-    component: () => import('layouts/PropertyLayout.vue'),
+    component: () => import('layouts/Layout.vue'),
     children: [
       {
         path: '',
