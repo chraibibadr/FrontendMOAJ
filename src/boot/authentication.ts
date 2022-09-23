@@ -11,12 +11,14 @@ export default boot(({ router }) => {
     console.log('BEFORE (getIsAuthenticated): ', store.getIsAuthenticated);
     console.log('BEFORE (getPermissions): ', store.getPermissions);
     console.log('BEFORE (getIsAdmin): ', store.getIsAdmin);
+    console.log('BEFORE (getUsername): ', store.getUsername);
 
-    await store.loadData();
+    if (!store.getIsAuthenticated) await store.loadData();
 
     console.log('AFTER (getIsAuthenticated): ', store.getIsAuthenticated);
     console.log('AFTER (getPermissions): ', store.getPermissions);
     console.log('AFTER (getIsAdmin): ', store.getIsAdmin);
+    console.log('AFTER (getUsername): ', store.getUsername);
 
     let permit = false;
 
