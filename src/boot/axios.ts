@@ -1,9 +1,12 @@
 import { boot } from 'quasar/wrappers';
 import axios from 'axios';
+import { useIsAuthenticated } from 'src/stores/isAuthenticated';
 
 axios.defaults.baseURL = 'http://localhost:3000/';
 
-export default boot(({ app, router }) => {
+export default boot(({ app }) => {
+  const store = useIsAuthenticated();
+
   let refresh = false;
 
   axios.interceptors.response.use(
@@ -23,8 +26,15 @@ export default boot(({ app, router }) => {
           axios.defaults.headers.common['Authorization'] =
             'Bearer ' + data.access_token;
 
+          console.log('SET TRUE (AXOIS)');
+
+          store.setIsAuthenticated(true);
+
           return axios(error.config);
-        } else router.push('/login');
+        } else {
+          console.log('SET FALSE (AXOIS)');
+          store.setIsAuthenticated(false);
+        }
       }
       refresh = false;
       return error;
