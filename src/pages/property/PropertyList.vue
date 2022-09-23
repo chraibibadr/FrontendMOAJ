@@ -673,7 +673,7 @@ export default {
           descending
         );
 
-        if (returnedData['data']) {
+        if (returnedData !== undefined) {
           // clear out existing data and add new
           rows.value.splice(0, rows.value.length, ...returnedData['data']);
 
@@ -749,7 +749,6 @@ export default {
 
     // edit property function
     const editProperty = async () => {
-      console.log(updatedProperty.value.image);
       const { data } = await axios.patch(
         'property/' + updatedDemand.value._id,
         {

@@ -502,7 +502,7 @@ export default {
           descending
         );
 
-        if (returnedData['data']) {
+        if (returnedData !== undefined) {
           // clear out existing data and add new
           rows.value.splice(0, rows.value.length, ...returnedData['data']);
 
