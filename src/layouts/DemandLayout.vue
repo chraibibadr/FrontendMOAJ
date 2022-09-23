@@ -19,8 +19,8 @@
                 <q-item
                   clickable
                   v-ripple
-                  :active="link === 'inbox'"
-                  @click="link = 'inbox'"
+                  :active="link === 'profile'"
+                  @click="link = 'profile'"
                   active-class="text-white bg-blue-9"
                 >
                   <q-item-section avatar>
@@ -94,9 +94,8 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
-import { axios } from 'boot/axios';
-import { useRouter } from 'vue-router';
 import { useIsAuthenticated } from 'src/stores/isAuthenticated';
+import { logout } from 'boot/functions';
 
 const linksList = [
   {
@@ -124,20 +123,10 @@ export default defineComponent({
   },
 
   setup() {
-    const router = useRouter();
     const store = useIsAuthenticated();
     const username = store.getUsername;
 
     const leftDrawerOpen = ref(false);
-
-    //logout function
-    const logout = async () => {
-      await axios.post('auth/logout', {}, { withCredentials: true });
-      axios.defaults.headers.common['Authorization'] = '';
-      console.log('set to false from demand');
-      store.setIsAuthenticated(false);
-      await router.push('/login');
-    };
 
     return {
       essentialLinks: linksList,
@@ -147,7 +136,7 @@ export default defineComponent({
       },
       username,
       logout,
-      link: ref('inbox'),
+      link: ref(null),
     };
   },
 });
