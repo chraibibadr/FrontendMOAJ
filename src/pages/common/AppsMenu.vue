@@ -51,16 +51,14 @@
 
 <script>
 import { useIsAuthenticated } from 'stores/isAuthenticated';
-import { storeToRefs } from 'pinia';
 
 export default {
   name: 'AppsMenu',
 
   setup() {
     const store = useIsAuthenticated();
-    const storeObject = storeToRefs(store);
-    const permissions = storeObject.getPermissions;
-    const role = storeObject.getIsAdmin;
+    const permissions = store.getPermissions;
+    const role = store.getIsAdmin;
 
     return {
       permissions,

@@ -55,7 +55,7 @@
                 </q-avatar>
 
                 <div class="q-mt-xs q-mb-md text-center text-weight-medium">
-                  @{{ storeObject.username }}
+                  @{{ username }}
                 </div>
 
                 <q-btn
@@ -97,7 +97,6 @@ import EssentialLink from 'components/EssentialLink.vue';
 import { axios } from 'boot/axios';
 import { useRouter } from 'vue-router';
 import { useIsAuthenticated } from 'src/stores/isAuthenticated';
-import { storeToRefs } from 'pinia';
 
 const linksList = [
   {
@@ -127,7 +126,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const store = useIsAuthenticated();
-    const storeObject = storeToRefs(store);
+    const username = store.getUsername;
 
     const leftDrawerOpen = ref(false);
 
@@ -146,7 +145,7 @@ export default defineComponent({
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
-      storeObject,
+      username,
       logout,
       link: ref('inbox'),
     };
