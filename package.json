@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "productName": "Gestion des stocks",
   "author": "BADER <badr.chraibibadr@gmail.com>",
   "private": true,
   "scripts": {
@@ -14,8 +14,9 @@
     "@quasar/extras": "^1.0.0",
     "@vuelidate/core": "^2.0.0-alpha.44",
     "@vuelidate/validators": "^2.0.0-alpha.31",
-    "axios": "^0.21.1",
+   
     "export-from-json": "^1.7.0",
+    "axios": "^0.21.1",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0"

@@ -1,7 +1,73 @@
 
 
 <template>
-  <q-page class=" q-pa-lg justify-center " >
+   <q-layout view="hHh lpR fFf" style="background-color:rgb(244,246,250) ;">
+   <q-header bordered>
+      <q-toolbar>
+        <q-toolbar-title> Gestion des stocks </q-toolbar-title>
+        <q-btn flat round icon="person">
+          <q-menu transition-show="jump-down" transition-hide="scale">
+            <div class="row no-wrap q-pa-md justify-center items-center">
+              <q-list class="rounded-borders text-primary">
+                <q-item
+                  clickable
+                  v-ripple
+                  :active="link === 'profile'"
+                  @click="link = 'profile'"
+                  to="users/profile"
+                  exact
+                  active-class="text-white bg-blue-9"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="manage_accounts" />
+                  </q-item-section>
+
+                  <q-item-section>Profile</q-item-section>
+                </q-item>
+
+                <q-separator spaced />
+
+                <q-item
+                  clickable
+                  v-ripple
+                  :active="link === 'settings'"
+                  @click="link = 'settings'"
+                  active-class="text-white bg-blue-9"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="settings" />
+                  </q-item-section>
+
+                  <q-item-section>Paramètres</q-item-section>
+                </q-item>
+              </q-list>
+
+              <q-separator vertical inset class="q-mx-md" />
+
+              <div class="column items-center">
+                <q-avatar size="72px">
+                  <img src="https://cdn.quasar.dev/img/avatar4.jpg" />
+                </q-avatar>
+
+                <div class="q-mt-xs q-mb-md text-center text-weight-medium">
+                  @{{ username }}
+                </div>
+
+                <q-btn
+                  color="primary"
+                  label="Déconnecter"
+                  push
+                  size="sm"
+                  v-close-popup
+                  @click="logout"
+                />
+              </div>
+            </div>
+          </q-menu>
+        </q-btn>
+      </q-toolbar>
+    </q-header>
+  <q-page-container class=" q-pa-lg justify-center " >
         
           
     <div class="row q-py-md fit  q-mt-md justify-between " style="border:2px solid transparent ;border-radius: 10px;">
@@ -67,7 +133,8 @@
        
     </div>
    
-  </q-page>
+  </q-page-container>
+</q-layout>
 </template>
 
 
@@ -79,10 +146,14 @@
 import {ref,} from 'vue';
 import { useRouter } from 'vue-router';
 import{axios} from 'boot/axios';
-
+import { useIsAuthenticated } from 'src/stores/isAuthenticated';
+import { logout } from 'boot/functions';
 
     export default{
       setup(){
+        const store = useIsAuthenticated();
+
+    const username = store.getUsername;
         const $router = useRouter();
       const state=ref({
         matricule:'',
@@ -109,14 +180,18 @@ import{axios} from 'boot/axios';
   getInfoUser();
   
   function    toUpdatePass(){
-                               $router.push({ path: '/users/password/' });
+                               $router.push({ path: 'password' });
                                  }
      
     
   // return
       return {
        state,
-       toUpdatePass
+       toUpdatePass,
+       username,
+       logout,
+      link: ref(null),
+    
       }
       }
 

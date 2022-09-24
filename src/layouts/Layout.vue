@@ -11,7 +11,9 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Bureau de contrôle </q-toolbar-title>
+        <q-toolbar-title>
+          {{ route.meta.title || 'Gestion des stocks' }}
+        </q-toolbar-title>
         <q-btn flat round icon="person">
           <q-menu transition-show="jump-down" transition-hide="scale">
             <div class="row no-wrap q-pa-md justify-center items-center">
@@ -19,8 +21,8 @@
                 <q-item
                   clickable
                   v-ripple
-                  :active="link === 'inbox'"
-                  @click="link = 'inbox'"
+                  :active="link === 'profile'"
+                  @click="link = 'profile'"
                   active-class="text-white bg-blue-9"
                 >
                   <q-item-section avatar>
@@ -74,15 +76,30 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Menu </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+      <q-scroll-area class="fit">
+        <q-list>
+          <q-item-label header> Menu </q-item-label>
+          <template v-for="(menuItem, index) in linksList" :key="index">
+            <q-item
+              :to="menuItem.link"
+              exact
+              clickable
+              v-ripple
+              v-if="
+                route.path.includes(menuItem.context) || menuItem.context == '/'
+              "
+            >
+              <q-item-section avatar>
+                <q-icon :name="menuItem.icon" />
+              </q-item-section>
+              <q-item-section>
+                {{ menuItem.label }}
+              </q-item-section>
+            </q-item>
+            <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+          </template>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
@@ -92,66 +109,89 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
-import { axios } from 'boot/axios';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useIsAuthenticated } from 'src/stores/isAuthenticated';
+import { logout } from 'boot/functions';
+import { useRoute } from 'vue-router';
+import { axios } from 'src/boot/axios';
 
 const linksList = [
   {
-    title: 'Les demandes',
+    context: 'demand',
+    label: 'Les demandes',
     icon: 'topic',
     link: '/demands',
+    separator: false,
   },
   {
-    title: 'Configuration',
+    context: 'demand',
+    label: 'Configuration',
     icon: 'settings',
     link: '/demands/config',
+    separator: true,
   },
   {
-    title: 'Les applications',
+    context: 'property',
+    label: 'Les propriétés',
+    icon: 'real_estate_agent',
+    link: '/property',
+    separator: false,
+  },
+  {
+    context: 'property',
+    label: 'Configuration',
+    icon: 'settings',
+    link: '/property/config',
+    separator: true,
+  },
+  {
+    context: '/',
+    label: 'Les applications',
     icon: 'widgets',
-    link: '/menu',
+    link: '/',
+    separator: false,
   },
 ];
 
-export default defineComponent({
-  name: 'DemandLayout',
-
-  components: {
-    EssentialLink,
-  },
-
+export default {
+  name: 'SecondLayout',
   setup() {
-    const username = ref(null);
-    const router = useRouter();
-
-    onMounted(async () => {
-      const { data } = await axios.post('auth/user');
-      username.value = data.matricule.toUpperCase();
-    });
+    const store = useIsAuthenticated();
+    const username = store.getUsername;
+    const route = useRoute();
 
     const leftDrawerOpen = ref(false);
 
-    //logout function
-    const logout = async () => {
-      await axios.post('auth/logout', {}, { withCredentials: true });
-      axios.defaults.headers.common['Authorization'] = '';
-      await router.push('/login');
-    };
+    setInterval(async () => {
+      const { status, data } = await axios.post(
+        'auth/refresh',
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (status === 202) {
+        axios.defaults.headers.common['Authorization'] =
+          'Bearer ' + data.access_token;
+
+        console.log('SET TRUE (LAYOUT)');
+
+        store.setIsAuthenticated(true);
+      }
+    }, 60000 * 14);
 
     return {
-      essentialLinks: linksList,
+      linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
-      mobileData: ref(true),
-      bluetooth: ref(false),
       username,
       logout,
-      link: ref('inbox'),
+      link: ref(null),
+      route,
     };
   },
-});
+};
 </script>

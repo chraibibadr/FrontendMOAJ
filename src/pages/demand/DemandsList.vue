@@ -1,198 +1,188 @@
 <template>
   <q-page>
-    <q-card class="no-border no-box-shadow">
-      <q-tabs
-        v-model="tab"
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab name="newDemand" label="Nouvelle demande" />
-        <q-tab
-          @click="refreshDemandsTable"
-          name="demands"
-          label="Les demandes"
-        />
-      </q-tabs>
+    <q-tabs
+      v-model="tab"
+      class="text-grey"
+      active-color="primary"
+      indicator-color="primary"
+      align="justify"
+      narrow-indicator
+    >
+      <q-tab name="newDemand" label="Nouvelle demande" />
+      <q-tab @click="refreshDemandsTable" name="demands" label="Les demandes" />
+    </q-tabs>
 
-      <q-separator />
+    <q-separator />
 
-      <q-tab-panels v-model="tab" animated>
-        <!-- start of new demand section -->
-        <q-tab-panel class="full-height" name="newDemand">
-          <q-card bordered>
-            <q-card-section>
-              <h5 class="text-center text-weight-bold">
-                Ajout d'une nouvelle demande
-              </h5>
-              <q-form
-                @submit="submitDemand"
-                class="q-gutter-md"
-                ref="formDemand"
-              >
-                <div class="row justify-center">
-                  <q-input
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    clearable
-                    v-model="titre"
-                    lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                    label="Titre de la demande"
-                  />
-                  <q-select
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    transition-show="jump-up"
-                    transition-hide="scale"
-                    v-model="selectType"
-                    :options="optionsType"
-                    @filter="filterType"
-                    lazy-rules
-                    :rules="[(val) => !!val || 'Requis']"
-                    label="Type de la demande"
-                  />
-                </div>
-                <div class="row justify-center">
-                  <q-select
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    transition-show="jump-up"
-                    transition-hide="scale"
-                    v-model="selectStatut"
-                    :options="optionsStatut"
-                    lazy-rules
-                    :rules="[(val) => !!val || 'Requis']"
-                    label="Statut de la demande"
-                  />
-                  <q-select
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    transition-show="jump-up"
-                    transition-hide="scale"
-                    v-model="selectDept"
-                    :options="optionsDept"
-                    @filter="filterDept"
-                    label="Departement de la demande"
-                  />
-                </div>
-                <div class="row justify-center">
-                  <q-input
-                    clearable
-                    class="col-12 q-px-sm"
-                    v-model="description"
-                    label="Description"
-                    lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                    filled
-                    autogrow
-                  />
-                </div>
-                <div class="row justify-start q-px-sm">
-                  <q-btn label="Ajouter" type="submit" color="primary" />
-                  <q-btn
-                    @click="resetForm"
-                    label="Réinitialiser"
-                    type="reset"
-                    color="primary"
-                    flat
-                    class="q-ml-sm"
-                  />
-                </div>
-              </q-form>
-            </q-card-section>
-          </q-card>
-        </q-tab-panel>
-        <!-- end of new demand section -->
+    <q-tab-panels v-model="tab" animated>
+      <!-- start of new demand section -->
+      <q-tab-panel class="full-height" name="newDemand">
+        <q-card bordered>
+          <q-card-section>
+            <h5 class="text-center text-weight-bold">
+              Ajout d'une nouvelle demande
+            </h5>
+            <q-form @submit="submitDemand" class="q-gutter-md" ref="formDemand">
+              <div class="row justify-center">
+                <q-input
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  clearable
+                  v-model="titre"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
+                  label="Titre de la demande"
+                />
+                <q-select
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  transition-show="jump-up"
+                  transition-hide="scale"
+                  v-model="selectType"
+                  :options="optionsType"
+                  @filter="filterType"
+                  lazy-rules
+                  :rules="[(val) => !!val || 'Requis']"
+                  label="Type de la demande"
+                />
+              </div>
+              <div class="row justify-center">
+                <q-select
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  transition-show="jump-up"
+                  transition-hide="scale"
+                  v-model="selectStatut"
+                  :options="optionsStatut"
+                  lazy-rules
+                  :rules="[(val) => !!val || 'Requis']"
+                  label="Statut de la demande"
+                />
+                <q-select
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  transition-show="jump-up"
+                  transition-hide="scale"
+                  v-model="selectDept"
+                  :options="optionsDept"
+                  @filter="filterDept"
+                  label="Departement de la demande"
+                />
+              </div>
+              <div class="row justify-center">
+                <q-input
+                  clearable
+                  class="col-12 q-px-sm"
+                  v-model="description"
+                  label="Description"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
+                  filled
+                  autogrow
+                />
+              </div>
+              <div class="row justify-start q-px-sm">
+                <q-btn label="Ajouter" type="submit" color="primary" />
+                <q-btn
+                  @click="resetForm"
+                  label="Réinitialiser"
+                  type="reset"
+                  color="primary"
+                  flat
+                  class="q-ml-sm"
+                />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-tab-panel>
+      <!-- end of new demand section -->
 
-        <!-- start of demands list section -->
-        <q-tab-panel class="full-height" name="demands">
-          <q-table
-            ref="demandTableRef"
-            title="Les demandes"
-            no-data-label="Aucun enregistrements trouvés"
-            no-results-label="Aucun enregistrements correspondants trouvés"
-            loading-label="Chargement"
-            rows-per-page-label="Element par page"
-            :dense="$q.screen.lt.md"
-            :rows="rows"
-            bordered
-            table-header-class="text-blue"
-            :columns="columns"
-            row-key="_id"
-            v-model:pagination="pagination"
-            :loading="loading"
-            :filter="filter"
-            binary-state-sort
-            :visible-columns="visibleColumns"
-            @request="onRequest"
-          >
-            <template v-slot:top-right="props">
-              <q-input
-                dense
-                debounce="1000"
-                v-model="filter"
-                placeholder="Filtrer"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+      <!-- start of demands list section -->
+      <q-tab-panel class="full-height" name="demands">
+        <q-table
+          ref="demandTableRef"
+          title="Les demandes"
+          no-data-label="Aucun enregistrements trouvés"
+          no-results-label="Aucun enregistrements correspondants trouvés"
+          loading-label="Chargement"
+          rows-per-page-label="Element par page"
+          :dense="$q.screen.lt.md"
+          :rows="rows"
+          bordered
+          table-header-class="text-blue"
+          :columns="columns"
+          row-key="_id"
+          v-model:pagination="pagination"
+          :loading="loading"
+          :filter="filter"
+          binary-state-sort
+          :visible-columns="visibleColumns"
+          @request="onRequest"
+        >
+          <template v-slot:top-right="props">
+            <q-input
+              dense
+              debounce="1000"
+              v-model="filter"
+              placeholder="Filtrer"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+            <q-btn
+              flat
+              round
+              dense
+              :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="props.toggleFullscreen"
+              class="q-ml-md"
+            />
+          </template>
+          <template v-slot:body-cell-statut="props">
+            <q-td :props="props">
+              <div v-if="props.value == 'Cloturé'">
+                <q-badge color="green" :label="props.value" />
+              </div>
+              <div v-if="props.value == 'En attente'">
+                <q-badge color="orange" :label="props.value" />
+              </div>
+              <div v-if="props.value == 'En cours'">
+                <q-badge color="blue" :label="props.value" />
+              </div>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-departement="props">
+            <q-td :props="props">
+              <div v-if="!props.value"><strong>Sans</strong></div>
+              <div v-if="props.value">{{ props.value }}</div>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
               <q-btn
-                flat
-                round
                 dense
-                :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                @click="props.toggleFullscreen"
-                class="q-ml-md"
-              />
-            </template>
-            <template v-slot:body-cell-statut="props">
-              <q-td :props="props">
-                <div v-if="props.value == 'Cloturé'">
-                  <q-badge color="green" :label="props.value" />
-                </div>
-                <div v-if="props.value == 'En attente'">
-                  <q-badge color="orange" :label="props.value" />
-                </div>
-                <div v-if="props.value == 'En cours'">
-                  <q-badge color="blue" :label="props.value" />
-                </div>
-              </q-td>
-            </template>
-            <template v-slot:body-cell-departement="props">
-              <q-td :props="props">
-                <div v-if="!props.value"><strong>Sans</strong></div>
-                <div v-if="props.value">{{ props.value }}</div>
-              </q-td>
-            </template>
-            <template v-slot:body-cell-actions="props">
-              <q-td :props="props">
-                <q-btn
-                  dense
-                  round
-                  flat
-                  color="green"
-                  @click="showEditDialog(props.row)"
-                  icon="edit"
-                ></q-btn>
-                <q-btn
-                  dense
-                  round
-                  flat
-                  color="red"
-                  @click="showDeleteDialog(props.row)"
-                  icon="delete"
-                ></q-btn>
-              </q-td>
-            </template>
-          </q-table>
-        </q-tab-panel>
-        <!-- end of demands list section -->
-      </q-tab-panels>
-    </q-card>
+                round
+                flat
+                color="green"
+                @click="showEditDialog(props.row)"
+                icon="edit"
+              ></q-btn>
+              <q-btn
+                dense
+                round
+                flat
+                color="red"
+                @click="showDeleteDialog(props.row)"
+                icon="delete"
+              ></q-btn>
+            </q-td>
+          </template>
+        </q-table>
+      </q-tab-panel>
+      <!-- end of demands list section -->
+    </q-tab-panels>
   </q-page>
 
   <!-- start of edit dialog -->
@@ -502,7 +492,7 @@ export default {
           descending
         );
 
-        if (returnedData['data']) {
+        if (returnedData !== undefined) {
           // clear out existing data and add new
           rows.value.splice(0, rows.value.length, ...returnedData['data']);
 
@@ -560,11 +550,6 @@ export default {
     // show delete dialog function
     function showDeleteDialog(item) {
       updatedDemand.value._id = item._id;
-      updatedDemand.value.titre = item.titre;
-      updatedDemand.value.type = item.type;
-      updatedDemand.value.statut = item.statut;
-      updatedDemand.value.departement = item.departement;
-      updatedDemand.value.description = item.description;
       deleteDialog.value = true;
     }
 

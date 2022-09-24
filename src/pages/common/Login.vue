@@ -66,6 +66,8 @@
 import { useRouter } from 'vue-router';
 import { axios } from 'boot/axios';
 import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useIsAuthenticated } from 'src/stores/isAuthenticated';
 
 export default {
   name: 'LoginPage',
@@ -79,15 +81,18 @@ export default {
 
       const inputs = Object.fromEntries(form.entries());
 
-      const { data } = await axios.post('auth/login', inputs, {
-        withCredentials: true,
-      });
-
-      axios.defaults.headers.common['Authorization'] =
-        'Bearer ' + data.access_token;
-
-    
-      await router.push('/menu');
+      await axios
+        .post('auth/login', inputs, {
+          withCredentials: true,
+        })
+        .then(function (response) {
+          axios.defaults.headers.common['Authorization'] =
+            'Bearer ' + response.data['access_token'];
+          router.push('/');
+        })
+        .catch(function (error) {
+          //console.log('ON ERROR', error);
+        });
     };
 
     return {

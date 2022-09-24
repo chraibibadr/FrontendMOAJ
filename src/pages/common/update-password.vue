@@ -1,5 +1,72 @@
 <template>
-<q-page class="row justify-center items-center" >
+   <q-layout view="hHh lpR fFf" style="background-color:rgb(244,246,250) ;">
+   <q-header bordered>
+      <q-toolbar>
+        <q-toolbar-title> Gestion des stocks </q-toolbar-title>
+        <q-btn flat round icon="person">
+          <q-menu transition-show="jump-down" transition-hide="scale">
+            <div class="row no-wrap q-pa-md justify-center items-center">
+              <q-list class="rounded-borders text-primary">
+                <q-item
+                  clickable
+                  v-ripple
+                  :active="link === 'profile'"
+                  @click="link = 'profile'"
+                  to="users/profile"
+                  exact
+                  active-class="text-white bg-blue-9"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="manage_accounts" />
+                  </q-item-section>
+
+                  <q-item-section>Profile</q-item-section>
+                </q-item>
+
+                <q-separator spaced />
+
+                <q-item
+                  clickable
+                  v-ripple
+                  :active="link === 'settings'"
+                  @click="link = 'settings'"
+                  active-class="text-white bg-blue-9"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="settings" />
+                  </q-item-section>
+
+                  <q-item-section>Paramètres</q-item-section>
+                </q-item>
+              </q-list>
+
+              <q-separator vertical inset class="q-mx-md" />
+
+              <div class="column items-center">
+                <q-avatar size="72px">
+                  <img src="https://cdn.quasar.dev/img/avatar4.jpg" />
+                </q-avatar>
+
+                <div class="q-mt-xs q-mb-md text-center text-weight-medium">
+                  @{{ username }}
+                </div>
+
+                <q-btn
+                  color="primary"
+                  label="Déconnecter"
+                  push
+                  size="sm"
+                  v-close-popup
+                  @click="logout"
+                />
+              </div>
+            </div>
+          </q-menu>
+        </q-btn>
+      </q-toolbar>
+    </q-header>
+  <q-page-container class=" q-pa-lg justify-center " >
+
     <div class="row q-pa-lg fit justify-center items-center " >
      
         <q-card round class="shadow-15 col-4  "  style="border:1px transparent ;border-radius: 20px;">
@@ -32,9 +99,9 @@
                <q-input class=" col-12  "  :type="isPwdC ? 'password' : 'text'" standout="bg-grey text-white" :class="{'error':v$.newPass.$error}" v-model="state.newPass"  label="Nouveau mot de passe" >
                 <template v-slot:append>
                   <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    :name="isPwdC ? 'visibility_off' : 'visibility'"
                     class="cursor-pointer"
-                    @click="isPwd = !isPwd"
+                    @click="isPwdC = !isPwdC"
                   />
                 </template>
                 <template  v-if="v$.newPass.$error"   v-slot:prepend>
@@ -58,7 +125,7 @@
                </div>
 
                <div class="row q-ma-0  justify-center q-pb-lg">
-               <q-input class=" col-12"   :type="isPwdC ? 'password' : 'text'"  standout="bg-grey text-white" :class="{'error':v$.confPass.$error}"  v-model="state.confPass" label="Confirmer le nouveau mot de passe" >
+               <q-input class=" col-12"   :type="isPwd? 'password' : 'text'"  standout="bg-grey text-white" :class="{'error':v$.confPass.$error}"  v-model="state.confPass" label="Confirmer le nouveau mot de passe" >
                 <template v-slot:append>
                   <q-icon
                     :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -72,7 +139,7 @@
                 Ce champ est important veuillez le remplire
                </q-tooltip>
                <q-tooltip  v-else class="bg-red-5"  :offset="[10, 10]">
-                {{v$.confPass.$errors[0].$message}}
+                Les mots de passe sont differents
                </q-tooltip>
                </q-icon>
                </template>
@@ -92,7 +159,8 @@
     <div class="q-pa-md">
    
       </div>
-  </q-page>
+  </q-page-container>
+</q-layout>
 </template>
 <script>
 import useVuelidate from '@vuelidate/core';
@@ -100,7 +168,8 @@ import { updateObject,verifyPassword } from 'src/util/methods';
 import { computed, ref } from 'vue';
 import { required,minLength, sameAs} from '@vuelidate/validators';
 import { useQuasar } from 'quasar';
-
+import { useIsAuthenticated } from 'src/stores/isAuthenticated';
+import { logout } from 'boot/functions';
    export default{
       setup(){
         const state=ref({
@@ -110,7 +179,9 @@ import { useQuasar } from 'quasar';
         });
         var iscliked=false;
         const $q = useQuasar();
+        const store = useIsAuthenticated();
        
+          const username = store.getUsername;
       // validation
         const rules = computed(() => {
             return {
@@ -136,7 +207,7 @@ import { useQuasar } from 'quasar';
              console.log(state.value.confPass);
              console.log(v$);
             if(iscliked && !v$.value.pass.$error)
-          {  await verifyPassword('62f3aae9a49b597ea2c5438f',state.value.pass).then((res)=>{
+          {  await verifyPassword(store.id,state.value.pass).then((res)=>{
        
             verifyPass.value= res.data;});
         }}
@@ -147,7 +218,8 @@ import { useQuasar } from 'quasar';
         iscliked=true;
        await  passIsMatching();
         if(!v$.value.$error && verifyPass){
-            updateObject('users',{password:state.value.pass},'62f3aae9a49b597ea2c5438f').then((res)=>{
+          console.log(state.value.pass)
+            updateObject('users',{password:state.value.newPass},store.id).then((res)=>{
          if(res.status==201){
            iscliked=false;
             $q.notify({
@@ -157,7 +229,7 @@ import { useQuasar } from 'quasar';
                                          position:'top',
                                          badgeClass: ' bg-light-blue-8'
                  });
-               
+               reset();
           } 
           else{
             $q.notify({
@@ -172,8 +244,17 @@ import { useQuasar } from 'quasar';
         }
 
       }
-
-        return{state,v$,update,verifyPass, isPwd:ref(true),isPwdC:ref(true)}
+      function reset(){
+    state.value.pass='';
+    state.value.newPass='';
+    state.value.confPass='';
+   v$.value.$reset();
+    
+    
+    
+  }
+        return{state,v$,update,verifyPass, isPwd:ref(true),isPwdC:ref(true),username,
+       logout, link: ref(null),}
       }}
 </script>
 <style>

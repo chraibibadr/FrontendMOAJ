@@ -177,7 +177,7 @@ import { computed,  ref} from 'vue';
 import{getAll,deleteData} from 'src/util/methods';
 import exportFromJSON from 'export-from-json';
 import { useRouter } from 'vue-router';
-import{axios} from 'boot/axios'
+import { useIsAuthenticated } from 'stores/isAuthenticated';
 
 /********************Columns********************** */
           const columns = [
@@ -291,14 +291,14 @@ const id=ref('');
 var sort=undefined;
 var colSort=undefined;
 var data=[];
-
+const store = useIsAuthenticated();
                 
            
 /************interaction with db********************* */
                     async  function fetchData(page){
-                        const { data } = await axios.post('auth/user');
+                       
                     const originalRows=ref([]);
-                    await  getAll('users/get',page,data._id+'/',filterBy.value.value,filter.value,sort,colSort).then(res=>{
+                    await  getAll('users/get',page,  store.id+'/',filterBy.value.value,filter.value,sort,colSort).then(res=>{
 
                             if(res.status==200)
                           {  originalRows.value= res.data.docs;

@@ -3,47 +3,90 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('pages/common/Login.vue'),
-  },
-  {
-    path: '/login',
-    component: () => import('pages/common/Login.vue'),
-  },
-  {
-    path: '/menu',
+    meta: {
+      isAuthenticated: true,
+    },
     component: () => import('pages/common/AppsMenu.vue'),
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('pages/common/Login.vue'),
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    meta: {
+      isAuthenticated: true,
+    },
+    component: () => import('pages/common/user-profile.vue'),
+  },
+  {
+    path: '/password',
+    name: 'password',
+    meta: {
+      isAuthenticated: true,
+    },
+    component: () => import('pages/common/update-password.vue'),
+  },
+  {
     path: '/demands',
-    component: () => import('layouts/DemandLayout.vue'),
+    meta: {
+      title: 'Bureau de contrôle',
+      isAuthenticated: true,
+      App3: true,
+    },
+    component: () => import('layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('pages/demand/DemandsList.vue') },
+      {
+        path: '',
+        name: 'demands',
+        component: () => import('pages/demand/DemandsList.vue'),
+      },
       {
         path: 'config',
+        name: 'demandConfig',
         component: () => import('pages/demand/DemandConfig.vue'),
       },
     ],
   },
   {
     path: '/property',
-    component: () => import('layouts/PropertyLayout.vue'),
+    meta: {
+      title: 'Les propriétés privé/publique',
+      isAuthenticated: true,
+      App4: true,
+    },
+    component: () => import('layouts/Layout.vue'),
     children: [
       {
         path: '',
+        name: 'property',
         component: () => import('pages/property/PropertyList.vue'),
       },
       {
         path: 'config',
+        name: 'propertyConfig',
         component: () => import('pages/property/PropertyConfig.vue'),
       },
     ],
   },
   {
     path: '/test',
+    name: 'test',
+    meta: {
+      title: 'test page',
+    },
     component: () => import('pages/Test.vue'),
   },
   {
-    path: '/users', component: () => import('layouts/usersLayout.vue'),
+    path: '/users', 
+    meta: {
+      title: 'Gestion des utilisateurs',
+      isAuthenticated: true,
+     isAdmin:true
+    },
+    component: () => import('layouts/secondLayout.vue'),
     children:[
       {path: '', component: () => import('pages/manage users/create-user.vue')},
       {path: 'update/:id', component: () => import('pages/manage users/update-user.vue')},
@@ -55,7 +98,13 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/incomes/expends', component: () => import('layouts/incomesExpdsLayout.vue'),
+    path: '/incomes/expends',
+    meta: {
+      title: 'Gestion des Revenus et depenses',
+      isAuthenticated: true,
+      App2:true
+    },
+    component: () => import('layouts/secondLayout.vue'),
     children:[
       {path: '', component: () => import('pages/manage incomesExpds/incomes/create-income.vue')},
       {path: 'incomes', component: () => import('pages/manage incomesExpds/incomes/list-incomes-v2.vue')},

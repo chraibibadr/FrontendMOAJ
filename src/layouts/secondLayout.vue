@@ -14,7 +14,7 @@
           />
           
           <q-toolbar-title class="text-light-blue-9  text-bold text-h5 " style="font-style: italic; font-family: Georgia; margin-left: 34%;">
-           Gestion Des Utilisateurs
+            {{ route.meta.title || 'Gestion des stocks' }}
           </q-toolbar-title>
           <q-btn  round icon="person" size="sm" color="light-blue-9">
           <q-menu transition-show="jump-down" transition-hide="scale">
@@ -90,7 +90,7 @@
          
   
           <template v-for="(menuItem, index) in essentialLinks" :key="index">
-                <q-item v-if="menuItem.items?false:true"  clickable v-ripple   @click="$router.push(menuItem.link)">
+                <q-item v-if="menuItem.items?false:true"  clickable v-ripple   :to=menuItem.link>
                   <q-item-section  avatar>
                     <q-avatar round color="light-blue-8" style="width: 34px;" text-color="white" :icon="menuItem.icon" />
                     
@@ -102,7 +102,7 @@
                 </q-item>
                 <q-expansion-item
                 
-                 v-else
+                 v-if="menuItem.items && route.path.includes(menuItem.context)"
               >
               <template v-slot:header>
             <q-item-section avatar>
@@ -162,19 +162,24 @@
   <script>
 
 import {  defineComponent, onMounted, ref } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { useRoute} from 'vue-router';
   import { axios } from 'boot/axios';
+  import { logout } from 'boot/functions';
+import { useIsAuthenticated } from 'src/stores/isAuthenticated';
 
   
    
   const linksList = [
+   
     {
+      
       title: 'Applications',
        icon: 'widgets',
-       link: '/menu'
+       link: '/'
     },
    
     {
+      context:'users',
       title: 'Utilisateurs',
        icon: 'people',
       items:[{
@@ -193,6 +198,7 @@ import {  defineComponent, onMounted, ref } from 'vue';
     },
     
     {
+      context:'users',
       title: 'Configuration',
       icon: 'settings',
       items:[{
@@ -210,6 +216,59 @@ import {  defineComponent, onMounted, ref } from 'vue';
   
   ],
     },
+    {
+      context:'incomes/expends',
+      title: 'Revenus',
+      icon: 'money',
+      items:[{
+      title: 'Ajout',
+      icon: 'attach_money',
+      link: '/incomes/expends'
+    },
+    {
+      title: 'Liste',
+      icon: 'ballot',
+      link: '/incomes/expends/incomes'
+    },
+  
+  
+  ],
+    },
+    
+    {
+      context:'incomes/expends',
+      title: 'Depenses',
+      icon: 'payments',
+      items:[{
+      title: 'Ajout',
+      icon: 'monetization_on ',
+      link: '/incomes/expends/c-exp'
+    },
+    {
+      title: 'Liste',
+      icon: 'ballot',
+      link: '/incomes/expends/expds'
+    },
+  
+  
+  ],
+  
+    },
+    
+    
+    {
+      context:'incomes/expends',
+      title: 'Configuration',
+      icon: 'settings',
+      items:[{
+      title: 'Types',
+      icon: 'styles',
+      link: '/incomes/expends/types'
+    },
+   
+  ],
+    },
+    
     
    
   ];
@@ -221,21 +280,29 @@ import {  defineComponent, onMounted, ref } from 'vue';
   
     setup () {
       const leftDrawerOpen = ref(false)
-      const $router = useRouter();
+      const route = useRoute();
       const miniState = ref(true);
-      const username=ref('');
+      const store = useIsAuthenticated();
+      const username = store.getUsername;
     //logout function
-    const logout = async () => {
-      await axios.post('auth/logout', {}, { withCredentials: true });
-      axios.defaults.headers.common['Authorization'] = '';
-      await $router.push('/login');
-    };
+    setInterval(async () => {
+      const { status, data } = await axios.post(
+        'auth/refresh',
+        {},
+        {
+          withCredentials: true,
+        }
+      );
 
-    onMounted(async () => {
-      const { data } = await axios.post('auth/user');
-       username.value = data.matricule.toUpperCase();
-    });
-   
+      if (status === 202) {
+        axios.defaults.headers.common['Authorization'] =
+          'Bearer ' + data.access_token;
+
+        console.log('SET TRUE (LAYOUT)');
+
+        store.setIsAuthenticated(true);
+      }
+    }, 60000 * 14);
       return {
         essentialLinks: linksList,
        
@@ -257,7 +324,7 @@ import {  defineComponent, onMounted, ref } from 'vue';
           }
       },
      
-     $router,logout,username
+     route,logout,username
     }
   }});
   </script>
