@@ -230,7 +230,10 @@
               <div v-if="props.value">
                 <q-btn @click="previewImg(props.value)" push round>
                   <q-avatar>
-                    <img :src="'http://localhost:3000/' + props.value" />
+                    <img
+                      draggable="false"
+                      :src="'http://localhost:3000/' + props.value"
+                    />
                   </q-avatar>
                 </q-btn>
               </div>
@@ -480,7 +483,7 @@
   <q-dialog v-model="imageDialog">
     <q-card class="full-width">
       <q-card-section>
-        <q-img :src="'http://localhost:3000/' + imgUrl" />
+        <q-img draggable="false" :src="'http://localhost:3000/' + imgUrl" />
       </q-card-section>
     </q-card>
   </q-dialog>
