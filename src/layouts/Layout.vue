@@ -140,7 +140,7 @@ const linksList = [
     context: 'property',
     label: 'Configuration',
     icon: 'settings',
-    link: '/demands/config',
+    link: '/property/config',
     separator: true,
   },
   {

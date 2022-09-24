@@ -1,267 +1,265 @@
 <template>
   <q-page>
-    <q-card class="no-border no-box-shadow">
-      <q-tabs
-        v-model="tab"
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab name="newProperty" label="Nouvelle propriété" />
-        <q-tab
-          @click="refreshPropertyTable"
-          name="property"
-          label="Les propriétés"
-        />
-      </q-tabs>
+    <q-tabs
+      v-model="tab"
+      class="text-grey"
+      active-color="primary"
+      indicator-color="primary"
+      align="justify"
+      narrow-indicator
+    >
+      <q-tab name="newProperty" label="Nouvelle propriété" />
+      <q-tab
+        @click="refreshPropertyTable"
+        name="property"
+        label="Les propriétés"
+      />
+    </q-tabs>
 
-      <q-separator />
+    <q-separator />
 
-      <q-tab-panels v-model="tab" animated>
-        <!-- start of new property section -->
-        <q-tab-panel class="full-height" name="newProperty">
-          <q-card bordered>
-            <q-card-section>
-              <h5 class="text-center text-weight-bold">
-                Ajout d'une nouvelle propriété
-              </h5>
-              <q-form
-                @submit="submitProperty"
-                class="q-gutter-md"
-                ref="formProperty"
-              >
-                <div class="row justify-center">
-                  <q-input
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    clearable
-                    v-model="libelle"
-                    lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                    label="Libelle"
-                  />
-                  <q-select
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    transition-show="jump-up"
-                    transition-hide="scale"
-                    v-model="selectType"
-                    :options="optionsType"
-                    lazy-rules
-                    :rules="[(val) => !!val || 'Requis']"
-                    label="Type de la propriété"
-                  />
-                </div>
-                <div class="row justify-center">
-                  <q-input
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    v-model="date"
-                    mask="date"
-                    :rules="['date']"
-                    error-message="Requis"
-                  >
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy
-                          cover
-                          transition-show="scale"
-                          transition-hide="scale"
-                        >
-                          <q-date v-model="date">
-                            <div class="row items-center justify-end">
-                              <q-btn
-                                v-close-popup
-                                label="Fermer"
-                                color="primary"
-                                flat
-                              />
-                            </div>
-                          </q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                  <q-input
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    clearable
-                    v-model.number="surface"
-                    type="number"
-                    label="Surface"
-                  />
-                </div>
-                <div class="row justify-center">
-                  <q-select
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    transition-show="jump-up"
-                    transition-hide="scale"
-                    v-model="selectCategorie"
-                    :options="optionsCategorie"
-                    @filter="filterCategorie"
-                    lazy-rules
-                    :rules="[(val) => !!val || 'Requis']"
-                    label="Categorie de la propriété"
-                  />
-                  <q-input
-                    clearable
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    v-model="description"
-                    label="Description"
-                    lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                    filled
-                    autogrow
-                  />
-                </div>
-                <div class="row justify-center">
-                  <q-file
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    bottom-slots
-                    v-model="image"
-                    label="Image"
-                    counter
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="cloud_upload" @click.stop.prevent />
-                    </template>
-                    <template v-slot:append>
-                      <q-icon
-                        name="close"
-                        @click.stop.prevent="image = null"
-                        class="cursor-pointer"
-                      />
-                    </template>
-                  </q-file>
-                  <q-input
-                    class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                    filled
-                    clearable
-                    v-model="localisation"
-                    label="Localisation"
-                  />
-                </div>
-                <div class="row justify-start q-px-sm">
-                  <q-btn label="Ajouter" type="submit" color="primary" />
-                  <q-btn
-                    @click="resetForm"
-                    label="Réinitialiser"
-                    type="reset"
-                    color="primary"
-                    flat
-                    class="q-ml-sm"
-                  />
-                </div>
-              </q-form>
-            </q-card-section>
-          </q-card>
-        </q-tab-panel>
-        <!-- end of new property section -->
+    <q-tab-panels v-model="tab" animated>
+      <!-- start of new property section -->
+      <q-tab-panel class="full-height" name="newProperty">
+        <q-card bordered>
+          <q-card-section>
+            <h5 class="text-center text-weight-bold">
+              Ajout d'une nouvelle propriété
+            </h5>
+            <q-form
+              @submit="submitProperty"
+              class="q-gutter-md"
+              ref="formProperty"
+            >
+              <div class="row justify-center">
+                <q-input
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  clearable
+                  v-model="libelle"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
+                  label="Libelle"
+                />
+                <q-select
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  transition-show="jump-up"
+                  transition-hide="scale"
+                  v-model="selectType"
+                  :options="optionsType"
+                  lazy-rules
+                  :rules="[(val) => !!val || 'Requis']"
+                  label="Type de la propriété"
+                />
+              </div>
+              <div class="row justify-center">
+                <q-input
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  v-model="date"
+                  mask="date"
+                  :rules="['date']"
+                  error-message="Requis"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy
+                        cover
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date v-model="date">
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Fermer"
+                              color="primary"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+                <q-input
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  clearable
+                  v-model.number="surface"
+                  type="number"
+                  label="Surface"
+                />
+              </div>
+              <div class="row justify-center">
+                <q-select
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  transition-show="jump-up"
+                  transition-hide="scale"
+                  v-model="selectCategorie"
+                  :options="optionsCategorie"
+                  @filter="filterCategorie"
+                  lazy-rules
+                  :rules="[(val) => !!val || 'Requis']"
+                  label="Categorie de la propriété"
+                />
+                <q-input
+                  clearable
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  v-model="description"
+                  label="Description"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
+                  filled
+                  autogrow
+                />
+              </div>
+              <div class="row justify-center">
+                <q-file
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  bottom-slots
+                  v-model="image"
+                  label="Image"
+                  counter
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="cloud_upload" @click.stop.prevent />
+                  </template>
+                  <template v-slot:append>
+                    <q-icon
+                      name="close"
+                      @click.stop.prevent="image = null"
+                      class="cursor-pointer"
+                    />
+                  </template>
+                </q-file>
+                <q-input
+                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
+                  filled
+                  clearable
+                  v-model="localisation"
+                  label="Localisation"
+                />
+              </div>
+              <div class="row justify-start q-px-sm">
+                <q-btn label="Ajouter" type="submit" color="primary" />
+                <q-btn
+                  @click="resetForm"
+                  label="Réinitialiser"
+                  type="reset"
+                  color="primary"
+                  flat
+                  class="q-ml-sm"
+                />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-tab-panel>
+      <!-- end of new property section -->
 
-        <!-- start of property list section -->
-        <q-tab-panel class="full-height" name="property">
-          <q-table
-            ref="propertyTableRef"
-            title="Les propriétés"
-            no-data-label="Aucun enregistrements trouvés"
-            no-results-label="Aucun enregistrements correspondants trouvés"
-            loading-label="Chargement"
-            rows-per-page-label="Element par page"
-            :dense="$q.screen.lt.md"
-            :rows="rows"
-            bordered
-            table-header-class="text-blue"
-            :columns="columns"
-            row-key="_id"
-            v-model:pagination="pagination"
-            :loading="loading"
-            :filter="filter"
-            binary-state-sort
-            :visible-columns="visibleColumns"
-            @request="onRequest"
-          >
-            <template v-slot:top-right="props">
-              <q-input
-                dense
-                debounce="1000"
-                v-model="filter"
-                placeholder="Filtrer"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+      <!-- start of property list section -->
+      <q-tab-panel class="full-height" name="property">
+        <q-table
+          ref="propertyTableRef"
+          title="Les propriétés"
+          no-data-label="Aucun enregistrements trouvés"
+          no-results-label="Aucun enregistrements correspondants trouvés"
+          loading-label="Chargement"
+          rows-per-page-label="Element par page"
+          :dense="$q.screen.lt.md"
+          :rows="rows"
+          bordered
+          table-header-class="text-blue"
+          :columns="columns"
+          row-key="_id"
+          v-model:pagination="pagination"
+          :loading="loading"
+          :filter="filter"
+          binary-state-sort
+          :visible-columns="visibleColumns"
+          @request="onRequest"
+        >
+          <template v-slot:top-right="props">
+            <q-input
+              dense
+              debounce="1000"
+              v-model="filter"
+              placeholder="Filtrer"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+            <q-btn
+              flat
+              round
+              dense
+              :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="props.toggleFullscreen"
+              class="q-ml-md"
+            />
+          </template>
+          <template v-slot:body-cell-type="props">
+            <q-td :props="props">
+              <div v-if="props.value == 'Privée'">
+                <q-badge color="red" :label="props.value" />
+              </div>
+              <div v-if="props.value == 'Publique'">
+                <q-badge color="green" :label="props.value" />
+              </div>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-date="props">
+            <q-td :props="props">
+              <div>{{ props.value.substring(0, 10) }}</div>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-surface="props">
+            <q-td :props="props">
+              <div v-if="!props.value"><strong>Sans</strong></div>
+              <div v-if="props.value">{{ props.value }}</div>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-image="props">
+            <q-td :props="props">
+              <div v-if="!props.value"><strong>Sans</strong></div>
+              <div v-if="props.value">{{ props.value }}</div>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-localisation="props">
+            <q-td :props="props">
+              <div v-if="!props.value"><strong>Sans</strong></div>
+              <div v-if="props.value">{{ props.value }}</div>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
               <q-btn
-                flat
-                round
                 dense
-                :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                @click="props.toggleFullscreen"
-                class="q-ml-md"
-              />
-            </template>
-            <template v-slot:body-cell-type="props">
-              <q-td :props="props">
-                <div v-if="props.value == 'Privée'">
-                  <q-badge color="red" :label="props.value" />
-                </div>
-                <div v-if="props.value == 'Publique'">
-                  <q-badge color="green" :label="props.value" />
-                </div>
-              </q-td>
-            </template>
-            <template v-slot:body-cell-date="props">
-              <q-td :props="props">
-                <div>{{ props.value.substring(0, 10) }}</div>
-              </q-td>
-            </template>
-            <template v-slot:body-cell-surface="props">
-              <q-td :props="props">
-                <div v-if="!props.value"><strong>Sans</strong></div>
-                <div v-if="props.value">{{ props.value }}</div>
-              </q-td>
-            </template>
-            <template v-slot:body-cell-image="props">
-              <q-td :props="props">
-                <div v-if="!props.value"><strong>Sans</strong></div>
-                <div v-if="props.value">{{ props.value }}</div>
-              </q-td>
-            </template>
-            <template v-slot:body-cell-localisation="props">
-              <q-td :props="props">
-                <div v-if="!props.value"><strong>Sans</strong></div>
-                <div v-if="props.value">{{ props.value }}</div>
-              </q-td>
-            </template>
-            <template v-slot:body-cell-actions="props">
-              <q-td :props="props">
-                <q-btn
-                  dense
-                  round
-                  flat
-                  color="green"
-                  @click="showEditDialog(props.row)"
-                  icon="edit"
-                ></q-btn>
-                <q-btn
-                  dense
-                  round
-                  flat
-                  color="red"
-                  @click="showDeleteDialog(props.row)"
-                  icon="delete"
-                ></q-btn>
-              </q-td>
-            </template>
-          </q-table>
-        </q-tab-panel>
-        <!-- end of property list section -->
-      </q-tab-panels>
-    </q-card>
+                round
+                flat
+                color="green"
+                @click="showEditDialog(props.row)"
+                icon="edit"
+              ></q-btn>
+              <q-btn
+                dense
+                round
+                flat
+                color="red"
+                @click="showDeleteDialog(props.row)"
+                icon="delete"
+              ></q-btn>
+            </q-td>
+          </template>
+        </q-table>
+      </q-tab-panel>
+      <!-- end of property list section -->
+    </q-tab-panels>
   </q-page>
 
   <!-- start of edit dialog -->
