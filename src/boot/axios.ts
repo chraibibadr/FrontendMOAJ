@@ -9,6 +9,7 @@ export default boot(({ app, router }) => {
   axios.interceptors.response.use(
     (resp) => resp,
     async (error) => {
+     
       if (error.response.status === 401 && !refresh) {
         refresh = true;
         const { status, data } = await axios.post(
@@ -20,6 +21,7 @@ export default boot(({ app, router }) => {
         );
 
         if (status === 202) {
+         
           axios.defaults.headers.common['Authorization'] =
             'Bearer ' + data.access_token;
 

@@ -86,7 +86,7 @@ export default {
       axios.defaults.headers.common['Authorization'] =
         'Bearer ' + data.access_token;
 
-      console.log(data);
+    
       await router.push('/menu');
     };
 

@@ -128,7 +128,6 @@ export default defineComponent({
 
     onMounted(async () => {
       const { data } = await axios.post('auth/user');
-      console.log(data);
       username.value = data.matricule.toUpperCase();
     });
 
