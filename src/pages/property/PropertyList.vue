@@ -228,19 +228,11 @@
             <q-td :props="props">
               <div v-if="!props.value"><strong>Sans</strong></div>
               <div v-if="props.value">
-                <q-btn @click="imageDialog = !imageDialog" push round>
+                <q-btn @click="previewImg(props.value)" push round>
                   <q-avatar>
                     <img :src="'http://localhost:3000/' + props.value" />
                   </q-avatar>
                 </q-btn>
-
-                <q-dialog v-model="imageDialog">
-                  <q-card class="full-width">
-                    <q-card-section>
-                      <q-img :src="'http://localhost:3000/' + props.value" />
-                    </q-card-section>
-                  </q-card>
-                </q-dialog>
               </div>
             </q-td>
           </template>
@@ -483,6 +475,16 @@
     </q-card>
   </q-dialog>
   <!-- end of delete confirmation dialog -->
+
+  <!-- start of image preview dialog-->
+  <q-dialog v-model="imageDialog">
+    <q-card class="full-width">
+      <q-card-section>
+        <q-img :src="'http://localhost:3000/' + imgUrl" />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <!-- end of image preview dialog-->
 </template>
 
 <script>
@@ -655,6 +657,13 @@ export default {
       page: 1,
       rowsPerPage: 5,
     });
+    const imageDialog = ref(false);
+    const imgUrl = ref('');
+
+    function previewImg(url) {
+      imageDialog.value = true;
+      imgUrl.value = url;
+    }
 
     // property table functions
     //loading data function
@@ -879,7 +888,9 @@ export default {
       editProperty,
       deleteProperty,
 
-      imageDialog: ref(false),
+      imageDialog,
+      imgUrl,
+      previewImg,
     };
   },
 };
