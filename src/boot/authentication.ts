@@ -40,9 +40,6 @@ export default boot(({ router }) => {
       // check if user is Admin
       if (store.getIsAdmin) {
 
-        /**********updated by smyej**************** */
-        
-        store.setPermissions(['App1','App2','App3','App4'])
         permit = true; // user is Admin : permit access
       } else {
         // App1 permission case
