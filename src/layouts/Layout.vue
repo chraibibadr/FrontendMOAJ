@@ -113,6 +113,7 @@ import { ref } from 'vue';
 import { useIsAuthenticated } from 'src/stores/isAuthenticated';
 import { logout } from 'boot/functions';
 import { useRoute } from 'vue-router';
+import { axios } from 'src/boot/axios';
 
 const linksList = [
   {
@@ -160,6 +161,25 @@ export default {
     const route = useRoute();
 
     const leftDrawerOpen = ref(false);
+
+    setInterval(async () => {
+      const { status, data } = await axios.post(
+        'auth/refresh',
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (status === 202) {
+        axios.defaults.headers.common['Authorization'] =
+          'Bearer ' + data.access_token;
+
+        console.log('SET TRUE (LAYOUT)');
+
+        store.setIsAuthenticated(true);
+      }
+    }, 60000 * 14);
 
     return {
       linksList,
