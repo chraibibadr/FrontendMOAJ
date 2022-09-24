@@ -227,7 +227,21 @@
           <template v-slot:body-cell-image="props">
             <q-td :props="props">
               <div v-if="!props.value"><strong>Sans</strong></div>
-              <div v-if="props.value">{{ props.value }}</div>
+              <div v-if="props.value">
+                <q-btn @click="imageDialog = !imageDialog" push round>
+                  <q-avatar>
+                    <img :src="'http://localhost:3000/' + props.value" />
+                  </q-avatar>
+                </q-btn>
+
+                <q-dialog v-model="imageDialog">
+                  <q-card class="full-width">
+                    <q-card-section>
+                      <q-img :src="'http://localhost:3000/' + props.value" />
+                    </q-card-section>
+                  </q-card>
+                </q-dialog>
+              </div>
             </q-td>
           </template>
           <template v-slot:body-cell-localisation="props">
@@ -302,7 +316,6 @@
                   transition-hide="scale"
                   dense
                   outlined
-                  @filter="filterType"
                   v-model="updatedProperty.type"
                   lazy-rules
                   :rules="[(val) => !!val || 'Requis']"
@@ -492,7 +505,7 @@ const columns = [
     required: false,
     field: 'image',
     label: 'Image',
-    align: 'left',
+    align: 'center',
   },
   {
     name: 'libelle',
@@ -599,16 +612,21 @@ export default {
 
     // submit function
     const submitProperty = async () => {
-      const { data } = await axios.post('property', {
-        libelle: libelle.value,
-        type: selectType.value,
-        date: date.value,
-        ...(surface.value ? { surface: surface.value } : {}),
-        categorie: selectCategorie.value,
-        description: description.value,
-        ...(image.value ? { image: image.value } : {}),
-        ...(localisation.value ? { localisation: localisation.value } : {}),
-      });
+      let formData = new FormData();
+
+      formData.append('libelle', libelle.value);
+      formData.append('type', selectType.value);
+      if (surface.value) formData.append('surface', surface.value);
+      formData.append('date', date.value);
+      formData.append('categorie', selectCategorie.value);
+      formData.append('description', description.value);
+      if (image.value) formData.append('image', image.value);
+      if (localisation.value)
+        formData.append('localisation', localisation.value);
+
+      console.log('IMAGE : ', image.value);
+
+      const { data } = await axios.post('property', formData);
 
       if (!data) {
         $q.notify({
@@ -726,7 +744,6 @@ export default {
       updatedProperty.value.surface = item.surface;
       updatedProperty.value.categorie = item.categorie;
       updatedProperty.value.description = item.description;
-      updatedProperty.value.image = item.image;
       updatedProperty.value.localisation = item.localisation;
       editDialog.value = true;
     }
@@ -734,37 +751,28 @@ export default {
     // show delete dialog function
     function showDeleteDialog(item) {
       updatedProperty.value._id = item._id;
-      updatedProperty.value.libelle = item.libelle;
-      updatedProperty.value.type = item.type;
-      updatedProperty.value.date = item.date;
-      updatedProperty.value.surface = item.surface;
-      updatedProperty.value.categorie = item.categorie;
-      updatedProperty.value.description = item.description;
-      updatedProperty.value.image = item.image;
-      updatedProperty.value.localisation = item.localisation;
       deleteDialog.value = true;
     }
 
     // edit property function
     const editProperty = async () => {
+      let formData = new FormData();
+
+      formData.append('libelle', updatedProperty.value.libelle);
+      formData.append('type', updatedProperty.value.type);
+      if (updatedProperty.value.surface)
+        formData.append('surface', updatedProperty.value.surface);
+      formData.append('date', updatedProperty.value.date);
+      formData.append('categorie', updatedProperty.value.categorie);
+      formData.append('description', updatedProperty.value.description);
+      if (updatedProperty.value.image)
+        formData.append('image', updatedProperty.value.image);
+      if (updatedProperty.value.localisation)
+        formData.append('localisation', updatedProperty.value.localisation);
+
       const { data } = await axios.patch(
-        'property/' + updatedDemand.value._id,
-        {
-          libelle: updatedProperty.value.libelle,
-          type: updatedProperty.value.type,
-          date: updatedProperty.value.date,
-          ...(updatedDemand.value.departement
-            ? { surface: updatedProperty.value.surface }
-            : {}),
-          categories: updatedProperty.value.categorie,
-          description: updatedDemand.value.description,
-          ...(updatedDemand.value.image
-            ? { image: updatedProperty.value.image }
-            : {}),
-          ...(updatedDemand.value.localisation
-            ? { localisation: updatedProperty.value.localisation }
-            : {}),
-        }
+        'property/' + updatedProperty.value._id,
+        formData
       );
 
       if (!data) {
@@ -870,6 +878,8 @@ export default {
       updatedProperty,
       editProperty,
       deleteProperty,
+
+      imageDialog: ref(false),
     };
   },
 };

@@ -550,11 +550,6 @@ export default {
     // show delete dialog function
     function showDeleteDialog(item) {
       updatedDemand.value._id = item._id;
-      updatedDemand.value.titre = item.titre;
-      updatedDemand.value.type = item.type;
-      updatedDemand.value.statut = item.statut;
-      updatedDemand.value.departement = item.departement;
-      updatedDemand.value.description = item.description;
       deleteDialog.value = true;
     }
 
