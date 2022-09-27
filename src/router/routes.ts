@@ -80,21 +80,21 @@ const routes: RouteRecordRaw[] = [
     component: () => import('pages/Test.vue'),
   },
   {
-    path: '/users', 
+    path: '/users',
     meta: {
       title: 'Gestion des utilisateurs',
       isAuthenticated: true,
-     isAdmin:true
+      isAdmin: true
     },
     component: () => import('layouts/secondLayout.vue'),
-    children:[
-      {path: '', component: () => import('pages/manage users/create-user.vue')},
-      {path: 'update/:id', component: () => import('pages/manage users/update-user.vue')},
-      {path: 'list', component: () => import('pages/manage users/list-users.vue')},
-      {path: 'functions', component: () => import('pages/manage users/configuration/manage-function.vue')},
-      {path: 'departments', component: () => import('pages/manage users/configuration/manage-department.vue')},
-      {path: 'password', component: () => import('pages/manage users/update-password.vue')},
-      {path: 'profile', component: () => import('pages/manage users/user-profile.vue')},
+    children: [
+      { path: '', component: () => import('pages/manage users/create-user.vue') },
+      { path: 'update/:id', component: () => import('pages/manage users/update-user.vue') },
+      { path: 'list', component: () => import('pages/manage users/list-users.vue') },
+      { path: 'functions', component: () => import('pages/manage users/configuration/manage-function.vue') },
+      { path: 'departments', component: () => import('pages/manage users/configuration/manage-department.vue') },
+      { path: 'password', component: () => import('pages/manage users/update-password.vue') },
+      { path: 'profile', component: () => import('pages/manage users/user-profile.vue') },
     ]
   },
   {
@@ -102,20 +102,20 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Gestion des Revenus et depenses',
       isAuthenticated: true,
-      App2:true
+      App2: true
     },
     component: () => import('layouts/secondLayout.vue'),
-    children:[
-      {path: '', component: () => import('pages/manage incomesExpds/incomes/create-income.vue')},
-      {path: 'incomes', component: () => import('pages/manage incomesExpds/incomes/list-incomes-v2.vue')},
-      {path: 'u-income/:id', component: () => import('pages//manage incomesExpds/incomes/update-income.vue')},
-      {path: 'history-i', component: () => import('pages/manage incomesExpds/incomes/history-incomes.vue')},
-      {path: 'c-exp', component: () => import('pages/manage incomesExpds/expenditures/create-expenditure.vue')},
-      {path: 'expds', component: () => import('pages/manage incomesExpds/expenditures/list-expenditures-v2.vue')},
-      {path: 'u-exp/:id', component: () => import('pages/manage incomesExpds/expenditures/update-expenditure.vue')},
-      {path: 'history-e', component: () => import('pages/manage incomesExpds/expenditures/history-expenditures.vue')},
-      {path: 'types', component: () => import('pages/manage incomesExpds/configuration/manage-type.vue')},
-     
+    children: [
+      { path: '', component: () => import('pages/manage incomesExpds/incomes/create-income.vue') },
+      { path: 'incomes', component: () => import('pages/manage incomesExpds/incomes/list-incomes-v2.vue') },
+      { path: 'u-income/:id', component: () => import('pages//manage incomesExpds/incomes/update-income.vue') },
+      { path: 'history-i', component: () => import('pages/manage incomesExpds/incomes/history-incomes.vue') },
+      { path: 'c-exp', component: () => import('pages/manage incomesExpds/expenditures/create-expenditure.vue') },
+      { path: 'expds', component: () => import('pages/manage incomesExpds/expenditures/list-expenditures-v2.vue') },
+      { path: 'u-exp/:id', component: () => import('pages/manage incomesExpds/expenditures/update-expenditure.vue') },
+      { path: 'history-e', component: () => import('pages/manage incomesExpds/expenditures/history-expenditures.vue') },
+      { path: 'types', component: () => import('pages/manage incomesExpds/configuration/manage-type.vue') },
+
 
     ]
   },
