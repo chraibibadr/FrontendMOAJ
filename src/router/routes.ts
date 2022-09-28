@@ -72,6 +72,27 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/products',
+    meta: {
+      title: 'Stock',
+      isAuthenticated: true,
+      App1: true,
+    },
+    component: () => import('layouts/Layout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'product',
+        component: () => import('pages/product/ProductsList.vue'),
+      },
+      {
+        path: 'config',
+        name: 'productConfig',
+        component: () => import('pages/product/productConfig.vue'),
+      },
+    ],
+  },
+  {
     path: '/test',
     name: 'test',
     meta: {

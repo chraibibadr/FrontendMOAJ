@@ -66,7 +66,7 @@
                 {{ menuItem.label }}
               </q-item-section>
             </q-item>
-            <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+            <q-separator :key="'sep' + index" v-if="menuItem.separator && route.path.includes(menuItem.context)" />
           </template>
         </q-list>
       </q-scroll-area>
@@ -115,6 +115,20 @@ const linksList = [
     separator: true,
   },
   {
+    context: 'product',
+    label: 'Stock',
+    icon: 'inventory_2',
+    link: '/products',
+    separator: false,
+  },
+  {
+    context: 'product',
+    label: 'Configuration',
+    icon: 'settings',
+    link: '/products/config',
+    separator: true,
+  },
+  {
     context: '/',
     label: 'Les applications',
     icon: 'widgets',
@@ -124,7 +138,7 @@ const linksList = [
 ];
 
 export default {
-  name: 'SecondLayout',
+  name: 'MainLayout',
   setup() {
     const store = useIsAuthenticated();
     const username = store.getUsername;

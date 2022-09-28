@@ -123,14 +123,14 @@
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Statut </q-item-label>
                 <q-select :options="optionsStatut" transition-show="jump-up" transition-hide="scale" dense outlined
-                  v-model="updatedDemand.statut" lazy-rules :rules="[(val) => !!val || 'Requis']"></q-select>
+                  v-model="updatedDemand.statut" lazy-rules :rules="[(val) => !!val || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Departement </q-item-label>
                 <q-select :options="optionsDept" transition-show="jump-up" transition-hide="scale" dense outlined
-                  @filter="filterDept" v-model="updatedDemand.departement"></q-select>
+                  @filter="filterDept" v-model="updatedDemand.departement" />
               </q-item-section>
             </q-item>
             <q-item>

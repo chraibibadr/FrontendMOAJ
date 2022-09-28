@@ -162,7 +162,7 @@
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Type </q-item-label>
                 <q-select :options="optionsType" transition-show="jump-up" transition-hide="scale" dense outlined
-                  v-model="updatedProperty.type" lazy-rules :rules="[(val) => !!val || 'Requis']"></q-select>
+                  v-model="updatedProperty.type" lazy-rules :rules="[(val) => !!val || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
@@ -192,10 +192,10 @@
             </q-item>
             <q-item>
               <q-item-section>
-                <q-item-label class="q-pb-xs"> Categorie </q-item-label>
+                <q-item-label class="q-pb-xs"> Catégorie </q-item-label>
                 <q-select :options="optionsCategorie" transition-show="jump-up" transition-hide="scale" dense outlined
                   @filter="filterCategorie" v-model="updatedProperty.categorie" lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"></q-select>
+                  :rules="[(val) => !!val || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
@@ -259,11 +259,7 @@
 
   <!-- start of image preview dialog-->
   <q-dialog v-model="imageDialog">
-    <q-card class="full-width">
-      <q-card-section>
-        <q-img draggable="false" :src="'http://localhost:3000/' + imgUrl" />
-      </q-card-section>
-    </q-card>
+    <q-img draggable="false" :src="'http://localhost:3000/' + imgUrl" />
   </q-dialog>
   <!-- end of image preview dialog-->
 </template>

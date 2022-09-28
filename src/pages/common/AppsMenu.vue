@@ -64,7 +64,7 @@
                 </q-btn>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-3" v-if="role || permissions.includes('App1')">
-                <q-btn class="fit" color="blue" stack>
+                <q-btn class="fit" color="blue" stack to="products">
                   <q-icon size="8em" name="inventory" />
                   <div>Stock</div>
                 </q-btn>
