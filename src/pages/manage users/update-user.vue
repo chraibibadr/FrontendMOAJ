@@ -160,7 +160,7 @@ import { util } from 'webpack';
                    
                 <q-icon round   name="info" size="22px" color="red" >
                 <q-tooltip   class="bg-red-5"  :offset="[10, 10]">
-                Vous devez accorder  des permissions aux utlisateurs
+                Vous devez accorder  des permissions aux utilisateurs
                 </q-tooltip> 
                 </q-icon>
                 
@@ -256,9 +256,6 @@ import { useRoute,useRouter } from 'vue-router';
        
        
       });
-      
-      //var matricule=ref('');  
-     // const password=ref('');
       const passwordLength=10;
       const matriculeLengthP1=2;
       const matriculeLengthP2=6;
@@ -322,13 +319,10 @@ const departments=ref([]);
       
 // update
      const update=function(){
-      
-        iscliked.value=true;
+       iscliked.value=true;
        v$.value.$validate();
        if(!v$.value.$error && !validatePermissions()){
-            
-       //   state.value.permissions=permissions;
-          state.value.role=state.value.role.value;  
+        state.value.role=state.value.role.value;  
           if(state.value.role=='user'){
             Object.assign(state.value,{permissions: permissions});
           }
@@ -343,14 +337,16 @@ const departments=ref([]);
                                          position:'top',
                                          badgeClass: ' bg-light-blue-8'
                  });
-                 $router.push({ path: '/incomes/expends/incomes' });
+                 $router.push({ path: '/users/list' });
           } 
           else{
             $q.notify({
-                                   message: 'Une erreur a été survenue lors de la transmition ',
+                                   message: 'Une erreur a été survenue lors de la transmition ,'+
+                                           'Régénérez un matricule,et saisissez un E-mail valide ',
                                      color: 'red-5',
                                      icon: 'gpp_bad',
-                                      position:'top'
+                                      position:'top',
+                                      multiLine:true
                    });
           }
                       
@@ -392,7 +388,7 @@ const departments=ref([]);
  
   // reset 
   function reset(){
-    $router.push({ path: '/utilisateurs' });
+    $router.push({ path: '/users/list' });
     
   }
   // validation
@@ -424,9 +420,7 @@ const departments=ref([]);
        else   show.value=false;
     })
    watch( [stock,prgRevenus,BDC,PPP],function (v){
-    console.log(permissions)
-   //   iscliked.value=false;
-     if(v[0].value && !permissions.includes('App1'))  permissions.push('App1');
+   if(v[0].value && !permissions.includes('App1'))  permissions.push('App1');
      else if(!v[0].value && permissions.includes('App1')) permissions.splice('App1',1);
 
      if(v[1].value && !permissions.includes('App2'))  permissions.push('App2');
@@ -449,7 +443,7 @@ const departments=ref([]);
   // return
       return {
       update,validatePermissions,getPassword,getMatricule,
-        PPP,iscliked,copy,reset,//triggerPositive,
+        PPP,iscliked,copy,reset,
         Roles,state, v$ ,
          Permission, departments,
         show,stock,prgRevenus,BDC,fonctions

@@ -14,7 +14,7 @@
                   v-ripple
                   :active="link === 'profile'"
                   @click="link = 'profile'"
-                  to="users/profile"
+                  to="/profile"
                   exact
                   active-class="text-white bg-blue-9"
                 >
@@ -67,15 +67,25 @@
         </q-btn>
       </q-toolbar>
     </q-header>
-  <q-page-container class=" q-pa-lg justify-center " >
+  <q-page-container  class="q-pa-sm">
         
           
     <div class="row q-py-md fit  q-mt-md justify-between " style="border:2px solid transparent ;border-radius: 10px;">
      
- 
-      <div round class=" col-12 col-sm-4  "  >
-    <div class="row q-pa-sm justify-center">  <q-img src="../../assets/profile.jpg"   style="height: 140px; max-width: 150px"/></div>
-      <div  class="row justify-center"  style="font-size: 16px;"><p class="text-weight-medium text">{{state.email}}</p></div>  
+      
+      <div round class=" col-12 col-sm-4 "  >
+    <div class="row q-pa-sm justify-center"> 
+      <q-avatar size="130px" font-size="85px" color="light-blue-10" text-color="white" icon="person" />
+     </div>
+      <div  class="row justify-center"  style="font-size: 11px;"  >
+      <p v-if="isAdmin" class="text text-bold">
+        Administrateur
+      </p>
+      <p v-else class=" text text-bold">
+       Utilisateur
+      </p>
+       </div> 
+       <div  class="row justify-center"  style="font-size: 16px;"><p class="text-weight-medium text">{{state.email}}</p></div>   
         <div class="row justify-center q-ml-xl"><q-icon name="work" class="col-2 " size="xs" color="light-blue-10"/>  
           <p class="text-weight-medium text col-6 q-mt-md "  style="font-size: 16px;">{{state.function.name}}</p>
         </div>
@@ -88,7 +98,7 @@
 
       </div>
       
-        <q-card round class="shadow-15 col-12 col-sm-4 "  style="border:1px solid transparent ;border-radius: 20px;height: 50%;">
+        <q-card round class="shadow-12 col-12 col-sm-6 "  style="border-radius: 20px;height: 50%;">
           <q-card-section class=" " style=" background-color:rgb(244,246,250) ;  color: rgb(116,124,128) ;
                            ">
             <div class="row  justify-between">
@@ -152,8 +162,7 @@ import { logout } from 'boot/functions';
     export default{
       setup(){
         const store = useIsAuthenticated();
-
-    const username = store.getUsername;
+        const username = store.getUsername;
         const $router = useRouter();
       const state=ref({
         matricule:'',
@@ -169,7 +178,7 @@ import { logout } from 'boot/functions';
      
     
 /********Interaction with DB******** */
-//get from db    
+//get from DB   
 
     async function getInfoUser() {
      await axios.post('auth/user').then((res)=>{
@@ -179,7 +188,7 @@ import { logout } from 'boot/functions';
   }
   getInfoUser();
   
-  function    toUpdatePass(){
+      function  toUpdatePass(){
                                $router.push({ path: 'password' });
                                  }
      
@@ -187,6 +196,7 @@ import { logout } from 'boot/functions';
   // return
       return {
        state,
+       isAdmin:store.isAdmin,
        toUpdatePass,
        username,
        logout,

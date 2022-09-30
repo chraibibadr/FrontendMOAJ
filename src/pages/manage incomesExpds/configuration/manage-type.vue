@@ -215,7 +215,7 @@ import { useQuasar } from 'quasar';
     const action=ref('Ajouter');
 /********Interaction with DB******** */
 
-
+                        //get from DB  
 
                       async function fetchData(page,sort){
                     const originalRows=ref([]);
@@ -237,25 +237,21 @@ import { useQuasar } from 'quasar';
                             rows.value=originalRows.value;
                         }
                         fetchData(1);
-//get from db    
-
-     
       
 // create
      const createOrUpdate= function(){
     
        v$.value.$validate();
        if(!v$.value.$error ){
-       console.log(state.value.name)
+     
       if(update.value){  updateObject('types',state.value,id.value).then((res)=>{
-       console.log(res);
        if(res.status==200){
          
             reset(); 
             targgetPositive('Type modifié avec succés');
             action.value='Ajouter';
             update.value=false;
-            fetchData(pagination.value.page);
+            handleRequest();
           } 
         else{
           targgetNegative('Une erreur a été survenue lors de la transmition ');
@@ -270,7 +266,7 @@ import { useQuasar } from 'quasar';
             
             reset();
             targgetPositive('Type créé avec succés');
-            fetchData(pagination.value.page);
+           handleRequest();
           }
           else{
             targgetNegative('Une erreur a été survenue lors de la transmition ');
@@ -286,7 +282,7 @@ import { useQuasar } from 'quasar';
                 deleteData('types',id.value).then((res)=>{
                 if(res.status==200){
                  targgetPositive('Type supprimée avec succés');
-                    fetchData(pagination.value.page);
+                  handleRequest();
                 }
                    else{
                     targgetNegative('Une erreur a été survenue lors de la  suppression');
@@ -321,7 +317,7 @@ import { useQuasar } from 'quasar';
                               }
                             
                         }
-    //
+    // notify
       function targgetPositive(msg){
         $q.notify({
                                        message:msg,
@@ -354,17 +350,6 @@ import { useQuasar } from 'quasar';
      
     }
      const v$ = useVuelidate(rules, state);
-
-
-    
-  // watch
-     
-    
-
-       
-
-     
-    
   // return
       return {
         createOrUpdate,v$,state,filter,columns,rows,pagination,handleRequest,sort,arrowIconName,sortColumn,deleteRow,
@@ -380,9 +365,6 @@ import { useQuasar } from 'quasar';
 
 </script>
 <style>
-.my-badge-class{
-  background-color:rgb(10, 182, 10);
-}
 .error{
   outline: 2px solid red;
   border-radius: 3px;

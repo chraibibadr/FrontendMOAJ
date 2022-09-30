@@ -6,7 +6,7 @@
               <q-card-section  style=" background-color:rgb(244,246,250) ;  color: rgb(116,124,128) ;
                                ">
                 <div class="row  justify-between">
-                  <div class="  q-my-sm  col-10 text-bold  " style="font-family:Georgia ;font-size: 16px;">Modification D'Une Depense</div>
+                  <div class="  q-my-sm  col-10 text-bold  " style="font-family:Georgia ;font-size: 16px;">Modification D'Une Dépense</div>
                       <q-icon color="light-blue-10" name="monetization_on" size="30px" />
                 </div>
               </q-card-section>
@@ -142,7 +142,7 @@ async function getUserById(){
        
         v$.value.$validate();
         if(!v$.value.$error){
-          var saveDate= state.value.dateE;
+          const saveDate= state.value.dateE;
           const array=state.value.dateE.split(' ');
           state.value.dateE=array[0]+'Z'+array[1];
         
@@ -190,11 +190,6 @@ async function getUserById(){
      function reset(){
       $router.push({ path: '/exps' });
      }
-   
-  
-    
-    
-  
      return{v$,state,types,create,reset}
     }
 }

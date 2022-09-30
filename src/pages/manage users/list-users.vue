@@ -1,5 +1,5 @@
          <template>
-                <q-page class=" q-pa-lg justify-center items-center">
+                <q-page class="  justify-center items-center">
                     <div class="q-pa-lg q-mt-lg">    
                         <div class="row q-my-lg ">
                             <div class="col-6   "  ></div>
@@ -296,7 +296,6 @@ const store = useIsAuthenticated();
            
 /************interaction with db********************* */
                     async  function fetchData(page){
-                       
                     const originalRows=ref([]);
                     await  getAll('users/get',page,  store.id+'/',filterBy.value.value,filter.value,sort,colSort).then(res=>{
 
@@ -353,8 +352,7 @@ const store = useIsAuthenticated();
 
            /************** sorting  ************** */           
                         const sortByColumn = (columnName) => {
-                            console.log(columnName)
-                            if(columnName!='role' && 
+                          if(columnName!='role' && 
                             columnName!='email' && columnName!='permissions'
                              && columnName!='action' && columnName!='phone' )
                        { 
@@ -366,12 +364,12 @@ const store = useIsAuthenticated();
                         
                           sort=1;
                           colSort=columnName;
-                          fetchData(pagination.value.page);
+                         handleRequest();
                         } else {
                             arrowIconName.value = 'arrow_drop_down';
                             sort=-1;
                           colSort=columnName;
-                          handleRequest;
+                          handleRequest();
                         }}
                        
                         }
@@ -460,19 +458,7 @@ const store = useIsAuthenticated();
                                             }
    </script>
    <style>
-   .c1{
-    color: orange;
-   }
-    .c2{
-    color:blue;
-   }
-   .c3{
-    color: #47f894;
-   }
-   .c4{
-    color: #f08a8a;
-   }
-   .text{
+  .text{
     font-family:Georgia ;
    }
   

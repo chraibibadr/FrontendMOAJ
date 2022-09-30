@@ -146,6 +146,7 @@ import { ref } from 'vue';
                  });
           } 
           else{
+            state.value.date=saveDate;
             $q.notify({
                                    message: 'Une erreur a été survenue lors de la transmition ',
                                      color: 'red-5',

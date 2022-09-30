@@ -93,8 +93,7 @@ const routes: RouteRecordRaw[] = [
       {path: 'list', component: () => import('pages/manage users/list-users.vue')},
       {path: 'functions', component: () => import('pages/manage users/configuration/manage-function.vue')},
       {path: 'departments', component: () => import('pages/manage users/configuration/manage-department.vue')},
-      {path: 'password', component: () => import('pages/manage users/update-password.vue')},
-      {path: 'profile', component: () => import('pages/manage users/user-profile.vue')},
+   
     ]
   },
   {

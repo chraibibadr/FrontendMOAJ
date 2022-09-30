@@ -167,7 +167,7 @@ import { util } from 'webpack';
  
 <script>
 import {computed, ref} from 'vue';
-import{getAll,createObject, deleteData, updateObject,} from '../../../util/methods';
+import{getAll,createObject, deleteData, updateObject,} from 'src/util/methods';
 import useVuelidate from '@vuelidate/core'
 import { required} from '@vuelidate/validators';
 import { useQuasar } from 'quasar';
@@ -218,7 +218,7 @@ import { useQuasar } from 'quasar';
 /********Interaction with DB******** */
 
 
-
+// get data from DB
 async function fetchData(page,sort){
                     const originalRows=ref([]);
                       await  getAll('departments/get',page+'/','','name',filter.value,sort).then(res=>{
@@ -239,7 +239,7 @@ async function fetchData(page,sort){
                             
                         }
                         fetchData(1);
-//get from db    
+
 
      
       
@@ -249,14 +249,13 @@ async function fetchData(page,sort){
        v$.value.$validate();
        if(!v$.value.$error ){
       if(update.value){  updateObject('departments',state.value,id.value).then((res)=>{
-       console.log(res);
        if(res.status==200){
          
             reset(); 
             targgetPositive('Departement modifié avec succés');
             action.value='Ajouter';
             update.value=false;
-            fetchData(pagination.value.page);
+            handleRequest();
           } 
         
          else{
@@ -273,7 +272,7 @@ async function fetchData(page,sort){
             
             reset();
             targgetPositive('Departement créé avec succés');
-            fetchData(pagination.value.page);
+            handleRequest();
           } 
           else{
             targgetNegative('Une erreur a été survenue lors de la transmition '); 
@@ -289,7 +288,7 @@ async function fetchData(page,sort){
                 deleteData('departments',id.value).then((res)=>{
                 if(res.status==200){
                  targgetPositive('Departement supprimé avec succés');
-                    fetchData(pagination.value.page);
+                 handleRequest();
                 }
                   else{
                     targgetNegative('Une erreur a été survenue lors de la suppression ');  
@@ -324,7 +323,7 @@ async function fetchData(page,sort){
                               }
                             
                         }
-    //
+    // notify
       function targgetPositive(msg){
         $q.notify({
                                        message:msg,
@@ -360,14 +359,7 @@ async function fetchData(page,sort){
 
 
     
-  // watch
-     
-    
-
-       
-
-     
-    
+  
   // return
       return {v$,state,filter,columns,rows,pagination,
         arrowIconName,sortColumn,action,loading,
@@ -384,9 +376,6 @@ async function fetchData(page,sort){
 
 </script>
 <style>
-.my-badge-class{
-  background-color:rgb(42, 10, 182);
-}
 .error{
   outline: 2px solid red;
   border-radius: 3px;

@@ -172,6 +172,8 @@ import { useIsAuthenticated } from 'src/stores/isAuthenticated';
 import { logout } from 'boot/functions';
    export default{
       setup(){
+        
+       const verifyPass=ref(true);
         const state=ref({
             pass:'',
            newPass:'',
@@ -180,8 +182,7 @@ import { logout } from 'boot/functions';
         var iscliked=false;
         const $q = useQuasar();
         const store = useIsAuthenticated();
-       
-          const username = store.getUsername;
+        const username = store.getUsername;
       // validation
         const rules = computed(() => {
             return {
@@ -201,11 +202,8 @@ import { logout } from 'boot/functions';
                 }); 
                 
                 const v$=useVuelidate(rules, state);
- var verifyPass=ref(true);
         async function passIsMatching(){
             v$.value.$validate();
-             console.log(state.value.confPass);
-             console.log(v$);
             if(iscliked && !v$.value.pass.$error)
           {  await verifyPassword(store.id,state.value.pass).then((res)=>{
        
@@ -213,12 +211,12 @@ import { logout } from 'boot/functions';
         }}
 
 
-// interaction with db
+/********************interaction with DB******************************* */
       const update=async function(){
         iscliked=true;
        await  passIsMatching();
         if(!v$.value.$error && verifyPass){
-          console.log(state.value.pass)
+        
             updateObject('users',{password:state.value.newPass},store.id).then((res)=>{
          if(res.status==201){
            iscliked=false;
@@ -244,15 +242,15 @@ import { logout } from 'boot/functions';
         }
 
       }
+    // reset
       function reset(){
     state.value.pass='';
     state.value.newPass='';
     state.value.confPass='';
    v$.value.$reset();
-    
-    
-    
   }
+
+      // return
         return{state,v$,update,verifyPass, isPwd:ref(true),isPwdC:ref(true),username,
        logout, link: ref(null),}
       }}

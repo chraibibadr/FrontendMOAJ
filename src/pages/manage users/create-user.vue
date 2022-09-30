@@ -319,10 +319,12 @@ const departments=ref([]);
                  });
           }
           else{ $q.notify({
-                                   message: 'Une erreur a été survenue lors de la transmition ex: E-mail doit etre valide,',
+                                   message: 'Une erreur a été survenue lors de la transmition ,'+
+                                           'Régénérez un matricule,et saisissez un E-mail valide ',
                                      color: 'red-5',
                                      icon: 'gpp_bad',
-                                      position:'top'
+                                      position:'top',
+                                     
                    });}
 
                         });
@@ -410,8 +412,6 @@ const departments=ref([]);
        else   show.value=false;
     })
    watch( [stock,prgRevenus,BDC,PPP],function (v){
-     console.log(permissions);
-   //   iscliked.value=false;
      if(v[0].value && !permissions.includes('App1'))  permissions.push('App1');
      else if(!v[0].value && permissions.includes('App1')) permissions.splice('App1',1);
 
@@ -435,7 +435,7 @@ const departments=ref([]);
   // return
       return {
        create,validatePermissions,getPassword,getMatricule,
-        matricule, PPP,iscliked,copy,reset,//triggerPositive,
+        matricule, PPP,iscliked,copy,reset,
         password,Roles,state, v$ ,
          Permission, departments,
         show,stock,prgRevenus,BDC,fonctions

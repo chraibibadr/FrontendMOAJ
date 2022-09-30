@@ -1,6 +1,6 @@
 <template>
-    <q-page class=" q-pa-lg justify-center items-center">
-        <div class="q-pa-lg">    
+    <q-page class="  justify-center items-center">
+        <div class="q-pa-lg q-mt-lg">    
             <div class="row q-my-md ">
                 <div class="col-6   "  >
                <q-btn
@@ -30,7 +30,6 @@
         style="border:1px transparent ;border-radius: 20px;"
               
                     :rows="rows"
-                    
                     separator='none'
                     v-model:pagination="pagination"
                     :loading="loading"
@@ -148,7 +147,7 @@
                                 <q-td key="dateE" style="width:9%;" :props="props">
                                  {{props.row.date}}
                                 </q-td>
-                                <q-td key="type" style="width:60%;"  :props="props">
+                                <q-td key="type" style="width:57%;"  :props="props">
                                  {{props.row.type[0].name}}
                                  </q-td>
                                 <q-td key="amountE"  class=" text-bold "  :props="props">
@@ -206,8 +205,8 @@
                            />
                           </div>
                           </template>
-                         <template v-slot:body="props" >
-                          <q-tr   :props="props"   class=" text-grey-6 text q-ma-0"  >
+                          <template v-slot:body="props" >
+                           <q-tr   :props="props"   class=" text-grey-6 text q-ma-0"  >
                             <q-td key="dateE"  style="width:9%;" :props="props">
                             {{props.row.date}}
                             </q-td>
@@ -218,13 +217,13 @@
                              {{props.row.amountE}}
                             </q-td>
                             <q-td key="action"   :props="props">
-                          <q-btn  size="15px" class="q-mt-sm " round flat   >
-                          <q-icon  name="edit" color="grey-5" @click="toUpdate(props.row._id)" /> </q-btn>
-                          <q-btn  size="15px" class="q-mt-sm " round flat  @click="idOfRow(props.row._id),confirm  = true" >
-                          <q-icon  name="delete" color="grey-5"/> </q-btn>
-                          </q-td>
-                          </q-tr>
-                        </template>
+                            <q-btn  size="15px" class="q-mt-sm " round flat   >
+                            <q-icon  name="edit" color="grey-5" @click="toUpdate(props.row._id)" /> </q-btn>
+                            <q-btn  size="15px" class="q-mt-sm " round flat  @click="idOfRow(props.row._id),confirm  = true" >
+                            <q-icon  name="delete" color="grey-5"/> </q-btn>
+                            </q-td>
+                            </q-tr>
+                         </template>
                          </q-table>
                           <q-tr v-if="props.row==rows[1]" class="row text-grey-6 text justify-end">
                           <q-td key="totalE"  class="col-4 col-xs-6 col-sm-4"  >
@@ -235,10 +234,25 @@
                         </q-tr>
                           </template>
                            <template  v-slot:bottom >
-                           <div class="row q-pt-lg " style="margin-left: 35%;">
-                           <span class="text-light-blue-9 text text-bold q-mr-xl q-mb-sm">Somme Des Totaux </span> 
-                            <span class="text-black  text text-bold  q-mr-lg  q-mb-sm">  {{expsNet}}</span>
-                           <div>   <q-btn
+                           <div class="col-8 q-pt-lg" style="padding-left: 35%;">
+                           <div class="row " >
+                           <span class="text-light-blue-9 text text-bold col-12 col-md-5 ">Somme Des Totaux </span> 
+                            <span class="text-black  text text-bold  ">  {{expsNet}}</span>
+                           </div>
+                           <div v-if="isclicked" class="row q-mt-sm " >
+                            <span class="text-light-blue-9 text text-bold col-12 col-md-5"> Date Derniere Dépense</span> 
+                            <span class="text-black  text text-bold ">  {{lastExp}}</span>
+                            </div>
+                            <div  v-if="isclicked" class="row q-mt-sm ">
+                            <span class="text-light-blue-9 text text-bold col-12 col-md-5"> Dépenses D'Aujourd'Hui</span> 
+                            <span class="text-black  text text-bold ">  {{dailyExps}}</span>
+                            </div>
+                            <div  v-if="isclicked" class="row q-mt-sm" >
+                            <span class="text-light-blue-9 text text-bold col-12 col-md-5">Somme Des Dépenses</span> 
+                            <span class="text-black  text text-bold ">  {{expends}}</span>
+                            </div>
+                            </div>
+                            <div class="q-pt-lg"> <q-btn
                               @click="showMore"
                               padding="none"
                               size="sm"
@@ -247,18 +261,6 @@
                               <q-icon :name="isclicked?'remove':'add'" size="18px "></q-icon>
                                </q-btn>
                               </div>
-                            </div>
-                         
-                            <div v-if="isclicked" class="row " style="margin-left: 35%;">
-                            
-                            <span class="text-light-blue-9 text text-bold q-mr-md q-mb-sm"> Date Derniere Dépense</span> 
-                            <span class="text-black  text text-bold q-mb-sm">  {{lastExp}}</span>
-                            </div>
-                            <div  v-if="isclicked" class="row " style="margin-left: 35%;">
-                            
-                            <span class="text-light-blue-9 text text-bold q-mr-xl q-mb-sm"> Dépenses D'Aujourd'Hui</span> 
-                            <span class="text-black  text text-bold ">  {{dailyExps}}</span>
-                            </div>
                             </template>
                             
                     </q-table>
@@ -285,7 +287,7 @@
   import { useQuasar } from 'quasar';
   import {   computed, ref, watch} from 'vue';
   import { useRouter } from 'vue-router';
-  import{getAll,getLastIncome,getDailyIncomes, deleteData} from 'src/util/methods';
+  import{getAll, deleteData, getFromDB} from 'src/util/methods';
   import exportFromJSON from 'export-from-json';
         const columns=[
         {
@@ -348,14 +350,14 @@
                         sortBy: 'desc',
                         descending: false,
                         page: 1,
-                        rowsPerPage: 2,
+                        rowsPerPage: 6,
                         rowsNumber:14
                         });
                         const pagination1 = ref({
                         
                         descending: false,
                         page: 1,
-                        rowsPerPage: 2,
+                        rowsPerPage: 5,
                        
                         });
   
@@ -363,12 +365,14 @@
                         
                         descending: false,
                         page: 1,
-                        rowsPerPage: 2,
+                        rowsPerPage: 5,
                         
                         });
    
   const lastExp=ref(0);
   const dailyExps=ref(0);
+  const expsNet=ref(0);
+  const expends=ref(0);
   const rows=ref([]);
   const loading=ref(true);
   const filter=ref('');
@@ -376,7 +380,6 @@
   const sortColumn = ref('_id');
   const arrowIconName = ref('arrow_drop_up');
   const sortDirection = ref(1);
-  const expsNet=ref(0);
   const type=ref('text');
   const $router = useRouter();
   const $q=useQuasar();
@@ -426,7 +429,7 @@
                                                             position:'top',
                                                             badgeClass: ' bg-light-blue-8'
                                                         });
-                                   handleRequest
+                                   handleRequest();
                                 }
                                 else{
                                   $q.notify({
@@ -438,18 +441,26 @@
                                 }
                                 })
                                  }
-  
-                      getLastIncome('expenditures').then((res)=>{
-                            const array=res.data[0].dateE.split('T')
+                          // get last expenditure saved
+                      getFromDB('expenditures').then((res)=>{
+                       if(res.data.length!=0)
+                           { const array=res.data[0].dateE.split('T')
                             lastExp.value=array[0]+' '+array[1].split('.')[0].split(':')[0]+':'+array[1].split('.')[0].split(':')[1];
-                            }
+                            }}
                         ); 
-                        
-                       getDailyIncomes('expenditures/daily/exp').then((res)=>{
-                           
+                        // sum of  expends registred this day
+                       getFromDB('expenditures/daily/exp').then((res)=>{
+                        if(res.data.length!=0)
                             dailyExps.value=res.data[0].amount;
                             }
-                        );    
+                        );  
+                        // get sum of expenditures
+                        getFromDB('expenditures/sum/exps').then(
+                           (res)=>{
+                            if(res.data.length!=0) expends.value=res.data[0].sum;
+                           }
+                            
+                          )
                         /****************helping functions********************* */
                           //sorting
                         const sortByColumn = (columnName) => {
@@ -520,9 +531,15 @@
                                                     });
                                                     data.push(
                                                   { 'total':value.totalE}
+
                                                 
                                                 );
                                                     });
+                                         data.push({'':'somme des totaux '+expsNet.value})
+                                         data.push({'':'date derniere dépense '+lastExp.value})
+                                         data.push({'':"dépenses d'Aujourd'hui "+dailyExps.value})
+
+                                                   
                                 
                                                     exportDataFromJSON(data,null,null);
                            }
@@ -530,7 +547,7 @@
                               
                                         
                                         function  pageNumber(number){
-                                          return   Math.ceil( number/ 2)
+                                          return   Math.ceil( number/ 5)
                                         } 
                                          
                                          
@@ -539,10 +556,10 @@
                                             isclicked.value=!isclicked.value
                                           }
                         return{
-                            rows,pagination,filterBy,columns,sortColumn, lastExp, dailyExps,type,
-                            arrowIconName,options,filter,loading, expsNet,isclicked,
+                            rows,pagination,filterBy,columns,sortColumn, lastExp, dailyExps,type,expends,
+                            arrowIconName,options,filter,loading, expsNet,isclicked,pagination1,pagination2,
                             sortByColumn,handleRequest,toUpdate,historique,deleteRow,idOfRow,excelParser,
-                            pageNumber,pagination1,pagination2,showMore,
+                            pageNumber,showMore,
                             confirm: ref(false),
                          pagesNumber:computed(() =>   Math.ceil(  pagination.value.rowsNumber/ pagination.value.rowsPerPage)),
                              

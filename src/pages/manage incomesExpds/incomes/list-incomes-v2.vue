@@ -1,6 +1,6 @@
 <template>
-    <q-page class=" q-pa-lg justify-center items-center">
-        <div class="q-pa-lg">    
+    <q-page class="  justify-center items-center">
+        <div class="q-pa-lg q-mt-lg">    
             <div class="row q-my-md ">
                 <div class="col-6   "  >
                     <q-btn
@@ -67,8 +67,7 @@
                       
                     <q-pagination
                         v-model="pagination.page"
-                      
-                        :max="pagesNumber"
+                       :max="pagesNumber"
                         size="sm"
                         direction-links
                         :max-pages="5"
@@ -150,7 +149,7 @@
                             <q-td key="date"  style="width:9%;" :props="props">
                             {{props.row.date}}
                             </q-td>
-                            <q-td key="type"  style="width:60%  ;"  class="content center" :props="props">
+                            <q-td key="type"  style="width:57%  ;"  class="content center" :props="props">
                                {{props.row.type[0].name}}
                             </q-td>
                             <q-td key="amount" style="width: ;" class=" text-bold "  :props="props">  
@@ -248,11 +247,36 @@
                         </q-tr>
                        </template>
                            <template v-slot:bottom >
-                           <div class="row q-pt-lg" style="margin-left: 35%;">
-                            <div class="col-6"></div>
-                            <span class="text-light-blue-9 text text-bold q-mr-lg q-mb-sm">Somme Des Totaux Net</span> 
-                            <span class="text-black  text text-bold q-mb-sm q-mr-lg">  {{incomesNet}}</span>
-                            <div>   <q-btn
+                            
+                            <div class="col-8 q-pt-lg" style="padding-left: 35%;">
+                              
+                           <div class="row " >
+                           <span class="text-light-blue-9 text text-bold col-12 col-md-5 ">Somme Des Totaux Net</span> 
+                            <span class="text-black  text text-bold col-sm-2 col-6 ">  {{incomesNet}}</span>
+                            
+                            </div>
+                            <div v-if="isclicked" class="row q-mt-sm" >
+                            
+                            <span  class="text-light-blue-9 text text-bold col-12 col-md-5"> Date Dernier Revenu</span> 
+                            <span class="text-black text text-bold ">  {{lastIncome}}</span>
+                            </div>
+                            <div v-if="isclicked" class="row  q-mt-sm ">
+                            
+                            <span class="text-light-blue-9 text text-bold  col-12 col-md-5"> Revenu D'Aujourd'Hui</span> 
+                            <span class="text-black  text text-bold ">  {{dailyIncomes}}</span>
+                            </div>
+                            <div v-if="isclicked"  class="row  q-mt-sm ">
+                           
+                            <span class="text-light-blue-9 text text-bold col-12 col-md-5  "> Revenu    </span> 
+                            <span class="text-black  text text-bold ">  {{incomes}}</span>
+                            </div>
+                            <div v-if="isclicked"  class="row  q-mt-sm " >
+                            
+                            <span class="text-light-blue-9 text text-bold col-12 col-md-5  "> Revenu Net  </span> 
+                            <span class="text-black  text text-bold  ">  {{incomeNet}}</span>
+                            </div>
+                          </div>
+                          <div class="q-pt-lg">   <q-btn
                               @click="showMore"
                               padding="none"
                               size="sm"
@@ -260,22 +284,6 @@
                               >
                               <q-icon :name="isclicked?'remove':'add'" size="18px "></q-icon>
                             </q-btn></div>
-                            </div>
-                            <div v-if="isclicked" class="row " style="margin-left: 35%;">
-                            <div class="col-6"></div>
-                            <span  class="text-light-blue-9 text text-bold q-mr-lg q-mb-sm"> Date Dernier Revenu</span> 
-                            <span class="text-black  text text-bold">  {{lastIncome}}</span>
-                            </div>
-                            <div v-if="isclicked" class="row " style="margin-left: 35%;">
-                            <div class="col-6"></div>
-                            <span class="text-light-blue-9 text text-bold q-mr-lg q-mb-sm"> Revenus D'Aujourd'Hui</span> 
-                            <span class="text-black  text text-bold">  {{dailyIncomes}}</span>
-                            </div>
-                            <div v-if="isclicked"  class="row " style="margin-left: 35%;">
-                            <div class="col-6"></div>
-                            <span class="text-light-blue-9 text text-bold q-mr-xl q-mb-sm "> Revenu Net </span> 
-                            <span class="text-black  text text-bold  q-ml-xl">  {{incomeNet}}</span>
-                            </div>
                             </template>
                             
                     </q-table>
@@ -302,7 +310,7 @@
  import { useQuasar } from 'quasar';
 import {   computed,  ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
-import{getAll,getLastIncome,getDailyIncomes,getSumNetofIncomes ,deleteData} from 'src/util/methods';
+import{getAll,deleteData,getFromDB} from 'src/util/methods';
 import exportFromJSON from 'export-from-json';
         const columns=[
         {
@@ -381,7 +389,7 @@ import exportFromJSON from 'export-from-json';
                       
                       descending: false,
                       page: 1,
-                      rowsPerPage: 2,
+                      rowsPerPage: 5,
                      
                       });
 
@@ -389,13 +397,15 @@ import exportFromJSON from 'export-from-json';
                       
                       descending: false,
                       page: 1,
-                      rowsPerPage: 2,
+                      rowsPerPage: 5,
                       
                       });
    
 const lastIncome=ref(0);
 const dailyIncomes=ref(0);
 const incomeNet=ref(0);
+const incomesNet=ref(0);
+const incomes=ref(0);
 const rows=ref([]);
 const loading=ref(true);
 const filter=ref('');
@@ -403,7 +413,6 @@ const filterBy=ref( {value:'type',name:'Type'});
 const sortColumn = ref('_id');
 const arrowIconName = ref('arrow_drop_up');
 const sortDirection = ref(1);
-const incomesNet=ref(0);
 const type=ref('text');
 const $router = useRouter();
 const $q=useQuasar();
@@ -455,7 +464,7 @@ const isclicked=ref(false)
                                                             position:'top',
                                                             badgeClass: ' bg-light-blue-8'
                                                         });
-                                   handleRequest
+                                   handleRequest()
                                 }
                                 else{
                                   $q.notify({
@@ -468,22 +477,31 @@ const isclicked=ref(false)
                                 
                                 })
                                  }
-
-                      getLastIncome('incomes').then((res)=>{
-                            const array=res.data[0].date.split('T')
-                            lastIncome.value=array[0]+' '+array[1].split('.')[0].split(':')[0]+':'+array[1].split('.')[0].split(':')[1];
+                              // get last incomes saved
+                      getFromDB('incomes').then((res)=>{
+                        if(res.data.length!=0)
+                           { const array=res.data[0].date.split('T')
+                            lastIncome.value=array[0]+' '+array[1].split('.')[0].split(':')[0]+':'+array[1].split('.')[0].split(':')[1];}
                             }
                         ); 
-                        
-                       getDailyIncomes('incomes/daily/incomes').then((res)=>{
-                           
+                        // get sum of daily incomes registred
+                       getFromDB('incomes/daily/incomes').then((res)=>{
+                           if(res.data.length!=0)
                             dailyIncomes.value=res.data[0].amount;
                             }
                         ); 
-                        getSumNetofIncomes('incomes/sum/net/incomes').then((res)=>{
+                        // get sum of incomes -sum expends
+                        getFromDB('incomes/sum/net/incomes').then((res)=>{
                               res.data.forEach(row=>{
                                incomeNet.value+=row.totalGNet;
-                              });})
+                              });});
+                          // get sum of incomes only
+                          getFromDB('incomes/sum/incomes').then(
+                           (res)=>{
+                            if(res.data.length!=0) incomes.value=res.data[0].sum;
+                           }
+                            
+                          );
                         /****************helping functions********************* */
                           //sorting
                         const sortByColumn = (columnName) => {
@@ -495,11 +513,11 @@ const isclicked=ref(false)
                    
                         if (sortDirection.value == 1) {
                             arrowIconName.value = 'arrow_drop_up';
-                          // rows.value.forEach((row)=>row.incomes.sort((a, b) => (a[columnName] > b[columnName] ? 1 : -1)));
+                         
                           fetchData(pagination.value.page,1);
                         } else {
                             arrowIconName.value = 'arrow_drop_down';
-                           // rows.value.forEach((row)=>row.incomes.sort((a, b) => (a[columnName] < b[columnName] ? 1 : -1)))
+                           
                            fetchData(pagination.value.page,-1);
                         }}
                        
@@ -517,7 +535,7 @@ const isclicked=ref(false)
                                     });
                         // update
                                     function  toUpdate(id){
-                                        console.log('1')
+                                      
                                     $router.push({ path: '/incomes/expends/u-income/'+id });
                                  }
                         // history
@@ -526,7 +544,7 @@ const isclicked=ref(false)
                                  }
                          //delete
                          function idOfRow(v){
-                            console.log('2')
+                        
                         id.value=v;
                            }
                        // exporting
@@ -559,12 +577,15 @@ const isclicked=ref(false)
                                                 
                                                 );
                                                     });
-                                
+                                        data.push({'':'somme des totaux '+incomeNet.value})
+                                         data.push({'':'date dernier revenu '+lastIncome.value})
+                                         data.push({'':"revenus d'Aujourd'hui "+dailyIncomes.value})
+                                         data.push({'':"revenu net "+incomesNet.value})
                                                     exportDataFromJSON(data,null,null)
                                                 }
                                                   
                                       function  pageNumber(number){
-                                        return   Math.ceil( number/ 2)
+                                        return   Math.ceil( number/ 5)
                                       } 
                                       function showMore(){
                                             isclicked.value=!isclicked.value
@@ -577,7 +598,7 @@ const isclicked=ref(false)
 
                         return{
                             rows,pagination,filterBy,columns,sortColumn,lastIncome,dailyIncomes,type,
-                            arrowIconName,options,filter,loading,incomesNet,
+                            arrowIconName,options,filter,loading,incomesNet,incomes,
                             incomeNet,pagination1,pagination2,isclicked,
                             sortByColumn,handleRequest,toUpdate,historique,deleteRow,
                             idOfRow,excelParser,pageNumber,showMore,

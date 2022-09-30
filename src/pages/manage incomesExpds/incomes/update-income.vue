@@ -124,13 +124,11 @@ async function getUserById(){
         
             const array=state.value.date.split('T')
             state.value.date=array[0]+' '+array[1].split('.')[0].split(':')[0]+':'+array[1].split('.')[0].split(':')[1];
-            console.log( state.value.date)
-         });}
+           });}
       getUserById();
    async function getData(url) {
            await getAll(url).then((res)=>{
-            console.log(res);
-           types.value = res.data
+                types.value = res.data
             
        
     });}

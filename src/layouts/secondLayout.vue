@@ -24,7 +24,7 @@
                   clickable
                   v-ripple
                   :active="link === 'inbox'"
-                 :to= "'/users/profile'"
+                 :to= "'/profile'"
                   active-class="text-white bg-blue-9"
                 >
                   <q-item-section avatar>
@@ -66,30 +66,19 @@
       </q-header>
   
       <q-drawer
-      v-model="leftDrawerOpen"
-      behavior="desktop"
-      show-if-above
+          v-model="leftDrawerOpen"
+          behavior="desktop"
+          show-if-above
           style="background-color:rgb(244,246,250) ;padding-top: 70px;"
           flat
           :mini="!leftDrawerOpen || miniState"
           @click.capture="drawerClick"
-           
           :width="250"
           :breakpoint="500"
-       
-          class="  q-pl-sm  " 
-     
-  
-  
-     
-        
-      >
-      <q-scroll-area class="fit "  >
-        <q-list   class="q-py-xl q-mb-lg text-white text-bold  bg-light-blue-10"  style="border:1px transparent; border-radius: 10px">
-          
-         
-  
-          <template v-for="(menuItem, index) in essentialLinks" :key="index">
+        class="  q-pl-sm  " >
+        <q-scroll-area class="fit" style=" border-radius: 10px;height: 50%">
+        <q-list   class="q-py-lg q-mb-xs text-white text-bold  bg-light-blue-10"  style=" border-radius: 10px">
+          <template v-for="(menuItem) in essentialLinks" :key="menuItem">
                 <q-item v-if="menuItem.items?false:true"  clickable v-ripple   :to=menuItem.link>
                   <q-item-section  avatar>
                     <q-avatar round color="light-blue-8" style="width: 34px;" text-color="white" :icon="menuItem.icon" />
@@ -100,29 +89,21 @@
                   
                   </q-item-section>
                 </q-item>
-                <q-expansion-item
-                
-                 v-if="menuItem.items && route.path.includes(menuItem.context)"
-              >
-              <template v-slot:header>
-            <q-item-section avatar>
-             
+                <q-expansion-item v-if="menuItem.items && route.path.includes(menuItem.context)">
+                <template v-slot:header>
+                <q-item-section avatar>
                 <q-avatar round color="light-blue-8" style="width: 34px;"  text-color="white" :icon="menuItem.icon" />
-              
-            </q-item-section>
-  
-            <q-item-section>
+               </q-item-section>
+               <q-item-section>
               {{ menuItem.title}}
-            </q-item-section>
-          </template>
-          <q-card class="bg-light-blue-10 q-ml-sm">
-            <q-card-section>
-            
-              <template v-for="(item, index) in menuItem.items" :key="index">
+                </q-item-section>
+                </template>
+              <q-card class="bg-light-blue-10 q-ml-sm">
+               <q-card-section>
+              <template v-for="(item) in menuItem.items" :key="item">
                 <q-item  clickable  :to="item.link" active-class="text-light-blue-6">
                   <q-item-section  avatar>
                     <q-icon color="white" size="" text-color="white" :name="item.icon" />
-                    
                   </q-item-section>
                   <q-item-section>
                     {{ item.title}}
@@ -130,15 +111,12 @@
                   </q-item-section>
                 </q-item>
               </template>
-           
             </q-card-section>
-          </q-card>
+               </q-card>
               </q-expansion-item>
-               
               </template>
-  
-        </q-list>
-      </q-scroll-area>
+         </q-list>
+       </q-scroll-area>
       <div class="q-mini-drawer-hide absolute" style="top: 75px; right: 5px">
             <q-btn
               dense

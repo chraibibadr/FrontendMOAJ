@@ -6,7 +6,7 @@
               <q-card-section style=" background-color:rgb(244,246,250) ;  color: rgb(116,124,128) ;
                                ">
                 <div class="row  justify-between">
-                      <div class="  q-my-sm  col-10 text-bold  " style="font-family:Georgia ;font-size: 16px;">Nouvelle Depense</div>
+                      <div class="  q-my-sm  col-10 text-bold  " style="font-family:Georgia ;font-size: 16px;">Nouvelle Dépense</div>
                       <q-icon color="light-blue-10" name="monetization_on" size="30px" />
                 </div>
               </q-card-section>
@@ -60,7 +60,7 @@
                   </div>
                    <div class="row q-ma-0   q-pb-lg">
     
-                   <q-select class=" col-5  "  standout="bg-grey text-white"  v-model="state.typeE" 
+                   <q-select class=" col-5  "  standout="bg-grey text-white" filled  v-model="state.typeE" 
                     label="Type"  :class="{'error':v$.typeE.$error}"
                     :options="types"
                     option-label="name"
@@ -122,6 +122,7 @@ import { ref } from 'vue';
        
         v$.value.$validate();
         if(!v$.value.$error){
+          const saveDate= state.value.dateE;
           const array=state.value.dateE.split(' ');
           state.value.dateE=array[0]+'Z'+array[1];
             createObject('expenditures',state.value).then((res)=>{
@@ -137,6 +138,7 @@ import { ref } from 'vue';
                  });
           } 
           else{
+             state.value.dateE=saveDate;
             $q.notify({
                                    message: 'Une erreur a été survenue lors de la transmition ',
                                      color: 'red-5',
