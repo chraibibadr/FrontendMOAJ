@@ -1,13 +1,7 @@
 <template>
   <q-page>
-    <q-tabs
-      v-model="tab"
-      class="text-grey"
-      active-color="primary"
-      indicator-color="primary"
-      align="justify"
-      narrow-indicator
-    >
+    <q-tabs v-model="tab" class="text-grey" active-color="primary" indicator-color="primary" align="justify"
+      narrow-indicator>
       <q-tab name="newDemand" label="Nouvelle demande" />
       <q-tab @click="refreshDemandsTable" name="demands" label="Les demandes" />
     </q-tabs>
@@ -24,73 +18,27 @@
             </h5>
             <q-form @submit="submitDemand" class="q-gutter-md" ref="formDemand">
               <div class="row justify-center">
-                <q-input
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  clearable
-                  v-model="titre"
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                  label="Titre de la demande"
-                />
-                <q-select
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  v-model="selectType"
-                  :options="optionsType"
-                  @filter="filterType"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                  label="Type de la demande"
-                />
+                <q-input class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled clearable v-model="titre" lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']" label="Titre de la demande" />
+                <q-select class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled transition-show="jump-up"
+                  transition-hide="scale" v-model="selectType" :options="optionsType" @filter="filterType" lazy-rules
+                  :rules="[(val) => !!val || 'Requis']" label="Type de la demande" />
               </div>
               <div class="row justify-center">
-                <q-select
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  v-model="selectStatut"
-                  :options="optionsStatut"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                  label="Statut de la demande"
-                />
-                <q-select
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  v-model="selectDept"
-                  :options="optionsDept"
-                  @filter="filterDept"
-                  label="Departement de la demande"
-                />
+                <q-select class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled transition-show="jump-up"
+                  transition-hide="scale" v-model="selectStatut" :options="optionsStatut" lazy-rules
+                  :rules="[(val) => !!val || 'Requis']" label="Statut de la demande" />
+                <q-select class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled transition-show="jump-up"
+                  transition-hide="scale" v-model="selectDept" :options="optionsDept" @filter="filterDept"
+                  label="Departement de la demande" />
               </div>
               <div class="row justify-center">
-                <q-input
-                  clearable
-                  class="col-12 q-px-sm"
-                  v-model="description"
-                  label="Description"
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                  filled
-                  autogrow
-                />
+                <q-input clearable class="col-12 q-px-sm" v-model="description" label="Description" lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']" filled autogrow />
               </div>
               <div class="row justify-start q-px-sm">
                 <q-btn label="Ajouter" type="submit" color="primary" />
-                <q-btn
-                  @click="resetForm"
-                  label="Réinitialiser"
-                  type="reset"
-                  color="primary"
-                  flat
-                  class="q-ml-sm"
-                />
+                <q-btn @click="resetForm" label="Réinitialiser" type="reset" color="primary" flat class="q-ml-sm" />
               </div>
             </q-form>
           </q-card-section>
@@ -100,45 +48,19 @@
 
       <!-- start of demands list section -->
       <q-tab-panel class="full-height" name="demands">
-        <q-table
-          ref="demandTableRef"
-          title="Les demandes"
-          no-data-label="Aucun enregistrements trouvés"
-          no-results-label="Aucun enregistrements correspondants trouvés"
-          loading-label="Chargement"
-          rows-per-page-label="Element par page"
-          :dense="$q.screen.lt.md"
-          :rows="rows"
-          bordered
-          table-header-class="text-blue"
-          :columns="columns"
-          row-key="_id"
-          v-model:pagination="pagination"
-          :loading="loading"
-          :filter="filter"
-          binary-state-sort
-          :visible-columns="visibleColumns"
-          @request="onRequest"
-        >
+        <q-table ref="demandTableRef" title="Les demandes" no-data-label="Aucun enregistrements trouvés"
+          no-results-label="Aucun enregistrements correspondants trouvés" loading-label="Chargement"
+          rows-per-page-label="Element par page" :dense="$q.screen.lt.md" :rows="rows" bordered
+          table-header-class="text-blue" :columns="columns" row-key="_id" v-model:pagination="pagination"
+          :loading="loading" :filter="filter" binary-state-sort :visible-columns="visibleColumns" @request="onRequest">
           <template v-slot:top-right="props">
-            <q-input
-              dense
-              debounce="1000"
-              v-model="filter"
-              placeholder="Filtrer"
-            >
+            <q-input dense debounce="1000" v-model="filter" placeholder="Filtrer">
               <template v-slot:append>
                 <q-icon name="search" />
               </template>
             </q-input>
-            <q-btn
-              flat
-              round
-              dense
-              :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-              @click="props.toggleFullscreen"
-              class="q-ml-md"
-            />
+            <q-btn flat round dense :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="props.toggleFullscreen" class="q-ml-md" />
           </template>
           <template v-slot:body-cell-statut="props">
             <q-td :props="props">
@@ -161,22 +83,8 @@
           </template>
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
-              <q-btn
-                dense
-                round
-                flat
-                color="green"
-                @click="showEditDialog(props.row)"
-                icon="edit"
-              ></q-btn>
-              <q-btn
-                dense
-                round
-                flat
-                color="red"
-                @click="showDeleteDialog(props.row)"
-                icon="delete"
-              ></q-btn>
+              <q-btn dense round flat color="green" @click="showEditDialog(props.row)" icon="edit"></q-btn>
+              <q-btn dense round flat color="red" @click="showDeleteDialog(props.row)" icon="delete"></q-btn>
             </q-td>
           </template>
         </q-table>
@@ -189,15 +97,7 @@
   <q-dialog v-model="editDialog">
     <q-card class="fit">
       <q-card-section class="bg-grey-3">
-        <q-btn
-          round
-          flat
-          dense
-          icon="close"
-          class="float-right"
-          color="grey-8"
-          v-close-popup
-        />
+        <q-btn round flat dense icon="close" class="float-right" color="grey-8" v-close-popup />
         <div class="text-h6">Modifier la demande</div>
       </q-card-section>
       <q-separator inset></q-separator>
@@ -207,71 +107,37 @@
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Titre </q-item-label>
-                <q-input
-                  v-model="updatedDemand.titre"
-                  dense
-                  outlined
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                />
+                <q-input v-model="updatedDemand.titre" dense outlined lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Type </q-item-label>
-                <q-select
-                  :options="optionsType"
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  dense
-                  outlined
-                  @filter="filterType"
-                  v-model="updatedDemand.type"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                ></q-select>
+                <q-select :options="optionsType" transition-show="jump-up" transition-hide="scale" dense outlined
+                  @filter="filterType" v-model="updatedDemand.type" lazy-rules :rules="[(val) => !!val || 'Requis']">
+                </q-select>
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Statut </q-item-label>
-                <q-select
-                  :options="optionsStatut"
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  dense
-                  outlined
-                  v-model="updatedDemand.statut"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                ></q-select>
+                <q-select :options="optionsStatut" transition-show="jump-up" transition-hide="scale" dense outlined
+                  v-model="updatedDemand.statut" lazy-rules :rules="[(val) => !!val || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Departement </q-item-label>
-                <q-select
-                  :options="optionsDept"
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  dense
-                  outlined
-                  @filter="filterDept"
-                  v-model="updatedDemand.departement"
-                ></q-select>
+                <q-select :options="optionsDept" transition-show="jump-up" transition-hide="scale" dense outlined
+                  @filter="filterDept" v-model="updatedDemand.departement" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Description </q-item-label>
-                <q-input
-                  v-model="updatedDemand.description"
-                  autogrow
-                  dense
-                  outlined
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                />
+                <q-input v-model="updatedDemand.description" autogrow dense outlined lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']" />
               </q-item-section>
             </q-item>
           </q-list>
@@ -279,21 +145,8 @@
       </q-card-section>
       <q-card-section>
         <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Modifier"
-            color="primary"
-            dense
-            v-close-popup
-            @click="editDemand"
-          ></q-btn>
-          <q-btn
-            flat
-            label="Annuler"
-            color="orange"
-            dense
-            v-close-popup
-          ></q-btn>
+          <q-btn flat label="Modifier" color="primary" dense v-close-popup @click="editDemand"></q-btn>
+          <q-btn flat label="Annuler" color="orange" dense v-close-popup></q-btn>
         </q-card-actions>
       </q-card-section>
     </q-card>
@@ -309,18 +162,11 @@
       <q-separator inset />
       <q-card-section class="row items-center">
         <span class="q-mx-sm">
-          Voulez-vous vraiment supprimer cette demande !</span
-        >
+          Voulez-vous vraiment supprimer cette demande !</span>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn
-          @click="deleteDemand"
-          flat
-          label="Confirmer"
-          color="red"
-          v-close-popup
-        />
+        <q-btn @click="deleteDemand" flat label="Confirmer" color="red" v-close-popup />
         <q-btn flat label="Annuler" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
@@ -417,7 +263,7 @@ export default {
         description.value =
         optionsDept.value =
         optionsType.value =
-          null;
+        null;
       formDemand.value.resetValidation();
     }
 

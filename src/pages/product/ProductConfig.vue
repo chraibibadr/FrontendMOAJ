@@ -1,25 +1,25 @@
 <template>
   <q-page padding>
     <div class="row justify-center q-gutter-md">
-      <!-- start of new property category form -->
+      <!-- start of new product category form -->
       <q-card class="col-xs-12 col col-md-4">
         <q-card-section>
           <h5 class="text-center text-weight-bold">
-            Ajout d'une catégorie de propriété
+            Ajout d'une catégorie de produit
           </h5>
           <q-form @submit="newCategory" class="q-gutter-md q-pa-lg">
             <q-input ref="categorieRef" filled clearable name="nom" v-model="category" lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Requis']" label="Catégorie de propriété" />
+              :rules="[(val) => (val && val.length > 0) || 'Requis']" label="Catégorie de produit" />
             <div>
               <q-btn class="full-width" label="Ajouter" type="submit" color="primary" />
             </div>
           </q-form>
         </q-card-section>
       </q-card>
-      <!-- end of new property category form -->
+      <!-- end of new product category form -->
 
-      <!-- start of property category list -->
-      <q-table class="col-xs-12 col col-md-7" title="Les catégories d'une propriété"
+      <!-- start of product category list -->
+      <q-table class="col-xs-12 col col-md-7" title="Les catégories d'un produit"
         no-data-label="Aucun enregistrements trouvés" no-results-label="Aucun enregistrements correspondants trouvés"
         loading-label="Chargement" rows-per-page-label="Element par page" :rows="rows" :columns="columns" row-key="name"
         :filter="filter">
@@ -39,7 +39,7 @@
           </q-td>
         </template>
       </q-table>
-      <!-- end of property category list -->
+      <!-- end of product category list -->
     </div>
   </q-page>
 
@@ -87,12 +87,12 @@ const columns = [
 ];
 
 async function loadCategory() {
-  const { data } = await axios.get('property-category');
+  const { data } = await axios.get('product-category');
   return data;
 }
 
 export default {
-  name: 'PropertyConfig',
+  name: 'productConfig',
   setup() {
     const $q = useQuasar();
     const category = ref(null);
@@ -110,7 +110,7 @@ export default {
     }
 
     const newCategory = async () => {
-      const { data } = await axios.post('property-category', { nom: category.value, });
+      const { data } = await axios.post('product-category', { nom: category.value, });
 
       if (data) {
         showMessage('Catégorie bien ajouter', 'positive');
@@ -126,9 +126,9 @@ export default {
       deleteDialog.value = true;
     }
 
-    // delete property category function
+    // delete product category function
     const deleteCategory = async () => {
-      const { data } = await axios.delete('property-category/' + updatedCategory.value._id);
+      const { data } = await axios.delete('product-category/' + updatedCategory.value._id);
 
       if (data) {
         rows.value = await loadCategory();

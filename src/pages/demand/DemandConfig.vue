@@ -1,14 +1,8 @@
 <template>
   <q-page>
     <q-card class="no-border no-box-shadow">
-      <q-tabs
-        v-model="tab"
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
+      <q-tabs v-model="tab" class="text-grey" active-color="primary" indicator-color="primary" align="justify"
+        narrow-indicator>
         <q-tab name="typeTab" label="Type" />
         <q-tab name="deptTab" label="Departement" />
       </q-tabs>
@@ -26,23 +20,10 @@
                   Ajout d'un type de demande
                 </h5>
                 <q-form @submit="newType" class="q-gutter-md q-pa-lg">
-                  <q-input
-                    ref="typeRef"
-                    filled
-                    clearable
-                    name="nom"
-                    v-model="type"
-                    lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                    label="Type de demande"
-                  />
+                  <q-input ref="typeRef" filled clearable name="nom" v-model="type" lazy-rules
+                    :rules="[(val) => (val && val.length > 0) || 'Requis']" label="Type de demande" />
                   <div>
-                    <q-btn
-                      class="full-width"
-                      label="Ajouter"
-                      type="submit"
-                      color="primary"
-                    />
+                    <q-btn class="full-width" label="Ajouter" type="submit" color="primary" />
                   </div>
                 </q-form>
               </q-card-section>
@@ -50,44 +31,24 @@
             <!-- end of new type category form -->
 
             <!-- start of demand type list -->
-            <q-table
-              class="col-xs-12 col col-md-7"
-              title="Les types d'une demande"
+            <q-table class="col-xs-12 col col-md-7" title="Les types d'une demande"
               no-data-label="Aucun enregistrements trouvés"
-              no-results-label="Aucun enregistrements correspondants trouvés"
-              loading-label="Chargement"
-              rows-per-page-label="Element par page"
-              :rows="typeRows"
-              :columns="typeColumns"
-              row-key="name"
-              :filter="typeFilter"
-            >
+              no-results-label="Aucun enregistrements correspondants trouvés" loading-label="Chargement"
+              rows-per-page-label="Element par page" :rows="typeRows" :columns="typeColumns" row-key="name"
+              :filter="typeFilter">
               <template v-slot:top-right="props">
                 <q-input dense v-model="typeFilter" placeholder="Filtrer">
                   <template v-slot:append>
                     <q-icon name="search" />
                   </template>
                 </q-input>
-                <q-btn
-                  flat
-                  round
-                  dense
-                  :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                  @click="props.toggleFullscreen"
-                  class="q-ml-md"
-                />
+                <q-btn flat round dense :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                  @click="props.toggleFullscreen" class="q-ml-md" />
               </template>
 
               <template v-slot:body-cell-actions="props">
                 <q-td :props="props">
-                  <q-btn
-                    dense
-                    round
-                    flat
-                    color="red"
-                    @click="showTypeDeleteDialog(props.row)"
-                    icon="delete"
-                  ></q-btn>
+                  <q-btn dense round flat color="red" @click="showTypeDeleteDialog(props.row)" icon="delete"></q-btn>
                 </q-td>
               </template>
             </q-table>
@@ -106,23 +67,10 @@
                   Ajout d'un departement de demande
                 </h5>
                 <q-form @submit="newDept" class="q-gutter-md q-pa-lg">
-                  <q-input
-                    ref="deptRef"
-                    filled
-                    clearable
-                    name="nom"
-                    v-model="dept"
-                    lazy-rules
-                    :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                    label="Departement de demande"
-                  />
+                  <q-input ref="deptRef" filled clearable name="nom" v-model="dept" lazy-rules
+                    :rules="[(val) => (val && val.length > 0) || 'Requis']" label="Departement de demande" />
                   <div>
-                    <q-btn
-                      class="full-width"
-                      label="Ajouter"
-                      type="submit"
-                      color="primary"
-                    />
+                    <q-btn class="full-width" label="Ajouter" type="submit" color="primary" />
                   </div>
                 </q-form>
               </q-card-section>
@@ -130,44 +78,24 @@
             <!-- end of new demand departement form -->
 
             <!-- start of demand type list -->
-            <q-table
-              class="col-xs-12 col col-md-7"
-              title="Les departements d'une demande"
+            <q-table class="col-xs-12 col col-md-7" title="Les departements d'une demande"
               no-data-label="Aucun enregistrements trouvés"
-              no-results-label="Aucun enregistrements correspondants trouvés"
-              loading-label="Chargement"
-              rows-per-page-label="Element par page"
-              :rows="deptRows"
-              :columns="deptColumns"
-              row-key="name"
-              :filter="deptFilter"
-            >
+              no-results-label="Aucun enregistrements correspondants trouvés" loading-label="Chargement"
+              rows-per-page-label="Element par page" :rows="deptRows" :columns="deptColumns" row-key="name"
+              :filter="deptFilter">
               <template v-slot:top-right="props">
                 <q-input dense v-model="deptFilter" placeholder="Filtrer">
                   <template v-slot:append>
                     <q-icon name="search" />
                   </template>
                 </q-input>
-                <q-btn
-                  flat
-                  round
-                  dense
-                  :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                  @click="props.toggleFullscreen"
-                  class="q-ml-md"
-                />
+                <q-btn flat round dense :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                  @click="props.toggleFullscreen" class="q-ml-md" />
               </template>
 
               <template v-slot:body-cell-actions="props">
                 <q-td :props="props">
-                  <q-btn
-                    dense
-                    round
-                    flat
-                    color="red"
-                    @click="showDeptDeleteDialog(props.row)"
-                    icon="delete"
-                  ></q-btn>
+                  <q-btn dense round flat color="red" @click="showDeptDeleteDialog(props.row)" icon="delete"></q-btn>
                 </q-td>
               </template>
             </q-table>
@@ -191,13 +119,7 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn
-          @click="deleteType"
-          flat
-          label="Confirmer"
-          color="red"
-          v-close-popup
-        />
+        <q-btn @click="deleteType" flat label="Confirmer" color="red" v-close-popup />
         <q-btn flat label="Annuler" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
@@ -212,17 +134,12 @@
       </q-card-section>
       <q-separator inset />
       <q-card-section class="row items-center">
-        <span class="q-mx-sm"> Voulez-vous vraiment supprimer ce type !</span>
+        <span class="q-mx-sm">
+          Voulez-vous vraiment supprimer ce departement !</span>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn
-          @click="deleteDept"
-          flat
-          label="Confirmer"
-          color="red"
-          v-close-popup
-        />
+        <q-btn @click="deleteDept" flat label="Confirmer" color="red" v-close-popup />
         <q-btn flat label="Annuler" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
@@ -292,9 +209,7 @@ export default {
     const updatedType = ref({});
 
     const newType = async () => {
-      const { data } = await axios.post('demande-type', {
-        nom: type.value,
-      });
+      const { data } = await axios.post('demande-type', { nom: type.value, });
 
       if (data) {
         showMessage('Type bien ajouter', 'positive');
@@ -312,9 +227,7 @@ export default {
 
     // delete property category function
     const deleteType = async () => {
-      const { data } = await axios.delete(
-        'demande-type/' + updatedType.value._id
-      );
+      const { data } = await axios.delete('demande-type/' + updatedType.value._id);
 
       if (data) {
         typeRows.value = await loadTypes();
@@ -330,9 +243,7 @@ export default {
     const updatedDept = ref({});
 
     const newDept = async () => {
-      const { data } = await axios.post('demande-departement', {
-        nom: dept.value,
-      });
+      const { data } = await axios.post('demande-departement', { nom: dept.value, });
 
       if (data) {
         showMessage('Departement bien ajouter', 'positive');
@@ -350,9 +261,7 @@ export default {
 
     // delete demand departement function
     const deleteDept = async () => {
-      const { data } = await axios.delete(
-        'demande-departement/' + updatedDept.value._id
-      );
+      const { data } = await axios.delete('demande-departement/' + updatedDept.value._id);
 
       if (data) {
         deptRows.value = await loadDepts();

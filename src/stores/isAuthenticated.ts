@@ -7,7 +7,7 @@ export const useIsAuthenticated = defineStore('isAuthenticated', {
     isAdmin: false,
     permissions: [''],
     username: '',
-    id:''
+    id: ''
   }),
 
   getters: {
@@ -23,7 +23,7 @@ export const useIsAuthenticated = defineStore('isAuthenticated', {
     getPermissions(state) {
       return state.permissions;
     },
-    getId(state){
+    getId(state) {
       return state.id;
     }
   },
@@ -52,7 +52,7 @@ export const useIsAuthenticated = defineStore('isAuthenticated', {
         this.username = data['matricule'];
         this.isAdmin = data['role'] == 'admin';
         this.permissions = data['permissions'];
-        this.id=data['_id'];
+        this.id = data['_id'];
       }
     },
   },

@@ -1,19 +1,9 @@
 <template>
   <q-page>
-    <q-tabs
-      v-model="tab"
-      class="text-grey"
-      active-color="primary"
-      indicator-color="primary"
-      align="justify"
-      narrow-indicator
-    >
+    <q-tabs v-model="tab" class="text-grey" active-color="primary" indicator-color="primary" align="justify"
+      narrow-indicator>
       <q-tab name="newProperty" label="Nouvelle propriété" />
-      <q-tab
-        @click="refreshPropertyTable"
-        name="property"
-        label="Les propriétés"
-      />
+      <q-tab @click="refreshPropertyTable" name="property" label="Les propriétés" />
     </q-tabs>
 
     <q-separator />
@@ -26,134 +16,56 @@
             <h5 class="text-center text-weight-bold">
               Ajout d'une nouvelle propriété
             </h5>
-            <q-form
-              @submit="submitProperty"
-              class="q-gutter-md"
-              ref="formProperty"
-            >
+            <q-form @submit="submitProperty" class="q-gutter-md" ref="formProperty">
               <div class="row justify-center">
-                <q-input
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  clearable
-                  v-model="libelle"
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                  label="Libelle"
-                />
-                <q-select
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  v-model="selectType"
-                  :options="optionsType"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                  label="Type de la propriété"
-                />
+                <q-input class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled clearable v-model="libelle" lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']" label="Libelle" />
+                <q-select class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled transition-show="jump-up"
+                  transition-hide="scale" v-model="selectType" :options="optionsType" lazy-rules
+                  :rules="[(val) => !!val || 'Requis']" label="Type de la propriété" />
               </div>
               <div class="row justify-center">
-                <q-input
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  v-model="date"
-                  mask="date"
-                  :rules="['date']"
-                  error-message="Requis"
-                >
+                <q-input class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled v-model="date" mask="date" :rules="['date']"
+                  error-message="Requis">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
-                      <q-popup-proxy
-                        cover
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                         <q-date v-model="date">
                           <div class="row items-center justify-end">
-                            <q-btn
-                              v-close-popup
-                              label="Fermer"
-                              color="primary"
-                              flat
-                            />
+                            <q-btn v-close-popup label="Fermer" color="primary" flat />
                           </div>
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
                 </q-input>
-                <q-input
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  clearable
-                  v-model.number="surface"
-                  type="number"
-                  label="Surface"
-                />
+                <q-input class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled clearable v-model.number="surface"
+                  type="number" label="Surface" />
               </div>
               <div class="row justify-center">
-                <q-select
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  v-model="selectCategorie"
-                  :options="optionsCategorie"
-                  @filter="filterCategorie"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                  label="Categorie de la propriété"
-                />
-                <q-input
-                  clearable
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  v-model="description"
-                  label="Description"
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                  filled
-                  autogrow
-                />
+                <q-select class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled transition-show="jump-up"
+                  transition-hide="scale" v-model="selectCategorie" :options="optionsCategorie"
+                  @filter="filterCategorie" lazy-rules :rules="[(val) => !!val || 'Requis']"
+                  label="Categorie de la propriété" />
+                <q-input clearable class="col-xs-12 col-sm-6 col-md-6 q-px-sm" v-model="description" label="Description"
+                  lazy-rules :rules="[(val) => (val && val.length > 0) || 'Requis']" filled autogrow />
               </div>
               <div class="row justify-center">
-                <q-file
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  bottom-slots
-                  v-model="image"
-                  label="Image"
-                  counter
-                >
+                <q-file class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled bottom-slots v-model="image" label="Image"
+                  counter>
                   <template v-slot:prepend>
                     <q-icon name="cloud_upload" @click.stop.prevent />
                   </template>
                   <template v-slot:append>
-                    <q-icon
-                      name="close"
-                      @click.stop.prevent="image = null"
-                      class="cursor-pointer"
-                    />
+                    <q-icon name="close" @click.stop.prevent="image = null" class="cursor-pointer" />
                   </template>
                 </q-file>
-                <q-input
-                  class="col-xs-12 col-sm-6 col-md-6 q-px-sm"
-                  filled
-                  clearable
-                  v-model="localisation"
-                  label="Localisation"
-                />
+                <q-input class="col-xs-12 col-sm-6 col-md-6 q-px-sm" filled clearable v-model="localisation"
+                  label="Localisation" />
               </div>
               <div class="row justify-start q-px-sm">
                 <q-btn label="Ajouter" type="submit" color="primary" />
-                <q-btn
-                  @click="resetForm"
-                  label="Réinitialiser"
-                  type="reset"
-                  color="primary"
-                  flat
-                  class="q-ml-sm"
-                />
+                <q-btn @click="resetForm" label="Réinitialiser" type="reset" color="primary" flat class="q-ml-sm" />
               </div>
             </q-form>
           </q-card-section>
@@ -163,45 +75,19 @@
 
       <!-- start of property list section -->
       <q-tab-panel class="full-height" name="property">
-        <q-table
-          ref="propertyTableRef"
-          title="Les propriétés"
-          no-data-label="Aucun enregistrements trouvés"
-          no-results-label="Aucun enregistrements correspondants trouvés"
-          loading-label="Chargement"
-          rows-per-page-label="Element par page"
-          :dense="$q.screen.lt.md"
-          :rows="rows"
-          bordered
-          table-header-class="text-blue"
-          :columns="columns"
-          row-key="_id"
-          v-model:pagination="pagination"
-          :loading="loading"
-          :filter="filter"
-          binary-state-sort
-          :visible-columns="visibleColumns"
-          @request="onRequest"
-        >
+        <q-table ref="propertyTableRef" title="Les propriétés" no-data-label="Aucun enregistrements trouvés"
+          no-results-label="Aucun enregistrements correspondants trouvés" loading-label="Chargement"
+          rows-per-page-label="Element par page" :dense="$q.screen.lt.md" :rows="rows" bordered
+          table-header-class="text-blue" :columns="columns" row-key="_id" v-model:pagination="pagination"
+          :loading="loading" :filter="filter" binary-state-sort :visible-columns="visibleColumns" @request="onRequest">
           <template v-slot:top-right="props">
-            <q-input
-              dense
-              debounce="1000"
-              v-model="filter"
-              placeholder="Filtrer"
-            >
+            <q-input dense debounce="1000" v-model="filter" placeholder="Filtrer">
               <template v-slot:append>
                 <q-icon name="search" />
               </template>
             </q-input>
-            <q-btn
-              flat
-              round
-              dense
-              :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-              @click="props.toggleFullscreen"
-              class="q-ml-md"
-            />
+            <q-btn flat round dense :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="props.toggleFullscreen" class="q-ml-md" />
           </template>
           <template v-slot:body-cell-type="props">
             <q-td :props="props">
@@ -230,10 +116,7 @@
               <div v-if="props.value">
                 <q-btn @click="previewImg(props.value)" push round>
                   <q-avatar>
-                    <img
-                      draggable="false"
-                      :src="'http://localhost:3000/' + props.value"
-                    />
+                    <img draggable="false" :src="'http://localhost:3000/' + props.value" />
                   </q-avatar>
                 </q-btn>
               </div>
@@ -247,22 +130,8 @@
           </template>
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
-              <q-btn
-                dense
-                round
-                flat
-                color="green"
-                @click="showEditDialog(props.row)"
-                icon="edit"
-              ></q-btn>
-              <q-btn
-                dense
-                round
-                flat
-                color="red"
-                @click="showDeleteDialog(props.row)"
-                icon="delete"
-              ></q-btn>
+              <q-btn dense round flat color="green" @click="showEditDialog(props.row)" icon="edit"></q-btn>
+              <q-btn dense round flat color="red" @click="showDeleteDialog(props.row)" icon="delete"></q-btn>
             </q-td>
           </template>
         </q-table>
@@ -275,15 +144,7 @@
   <q-dialog v-model="editDialog">
     <q-card class="fit">
       <q-card-section class="bg-grey-3">
-        <q-btn
-          round
-          flat
-          dense
-          icon="close"
-          class="float-right"
-          color="grey-8"
-          v-close-popup
-        />
+        <q-btn round flat dense icon="close" class="float-right" color="grey-8" v-close-popup />
         <div class="text-h6">Modifier la propriété</div>
       </q-card-section>
       <q-separator inset></q-separator>
@@ -293,56 +154,28 @@
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Libelle </q-item-label>
-                <q-input
-                  v-model="updatedProperty.libelle"
-                  dense
-                  outlined
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                />
+                <q-input v-model="updatedProperty.libelle" dense outlined lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Type </q-item-label>
-                <q-select
-                  :options="optionsType"
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  dense
-                  outlined
-                  v-model="updatedProperty.type"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                ></q-select>
+                <q-select :options="optionsType" transition-show="jump-up" transition-hide="scale" dense outlined
+                  v-model="updatedProperty.type" lazy-rules :rules="[(val) => !!val || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Date </q-item-label>
-                <q-input
-                  dense
-                  outlined
-                  v-model="updatedProperty.date"
-                  mask="date"
-                  :rules="['date']"
-                  error-message="Requis"
-                >
+                <q-input dense outlined v-model="updatedProperty.date" mask="date" :rules="['date']"
+                  error-message="Requis">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
-                      <q-popup-proxy
-                        cover
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                         <q-date v-model="date">
                           <div class="row items-center justify-end">
-                            <q-btn
-                              v-close-popup
-                              label="Fermer"
-                              color="primary"
-                              flat
-                            />
+                            <q-btn v-close-popup label="Fermer" color="primary" flat />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -354,63 +187,33 @@
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Surface </q-item-label>
-                <q-input
-                  dense
-                  outlined
-                  clearable
-                  v-model.number="updatedProperty.surface"
-                  type="number"
-                />
+                <q-input dense outlined clearable v-model.number="updatedProperty.surface" type="number" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
-                <q-item-label class="q-pb-xs"> Categorie </q-item-label>
-                <q-select
-                  :options="optionsCategorie"
-                  transition-show="jump-up"
-                  transition-hide="scale"
-                  dense
-                  outlined
-                  @filter="filterCategorie"
-                  v-model="updatedProperty.categorie"
-                  lazy-rules
-                  :rules="[(val) => !!val || 'Requis']"
-                ></q-select>
+                <q-item-label class="q-pb-xs"> Catégorie </q-item-label>
+                <q-select :options="optionsCategorie" transition-show="jump-up" transition-hide="scale" dense outlined
+                  @filter="filterCategorie" v-model="updatedProperty.categorie" lazy-rules
+                  :rules="[(val) => !!val || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Description </q-item-label>
-                <q-input
-                  v-model="updatedProperty.description"
-                  autogrow
-                  dense
-                  outlined
-                  lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || 'Requis']"
-                />
+                <q-input v-model="updatedProperty.description" autogrow dense outlined lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Requis']" />
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Image </q-item-label>
-                <q-file
-                  dense
-                  outlined
-                  bottom-slots
-                  v-model="updatedProperty.image"
-                  counter
-                >
+                <q-file dense outlined bottom-slots v-model="updatedProperty.image" counter>
                   <template v-slot:prepend>
                     <q-icon name="cloud_upload" @click.stop.prevent />
                   </template>
                   <template v-slot:append>
-                    <q-icon
-                      name="close"
-                      @click.stop.prevent="updatedProperty.image = null"
-                      class="cursor-pointer"
-                    />
+                    <q-icon name="close" @click.stop.prevent="updatedProperty.image = null" class="cursor-pointer" />
                   </template>
                 </q-file>
               </q-item-section>
@@ -418,12 +221,7 @@
             <q-item>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> Localisation </q-item-label>
-                <q-input
-                  v-model="updatedProperty.localisation"
-                  autogrow
-                  dense
-                  outlined
-                />
+                <q-input v-model="updatedProperty.localisation" autogrow dense outlined />
               </q-item-section>
             </q-item>
           </q-list>
@@ -431,21 +229,8 @@
       </q-card-section>
       <q-card-section>
         <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Modifier"
-            color="primary"
-            dense
-            v-close-popup
-            @click="editProperty"
-          ></q-btn>
-          <q-btn
-            flat
-            label="Annuler"
-            color="orange"
-            dense
-            v-close-popup
-          ></q-btn>
+          <q-btn flat label="Modifier" color="primary" dense v-close-popup @click="editProperty"></q-btn>
+          <q-btn flat label="Annuler" color="orange" dense v-close-popup></q-btn>
         </q-card-actions>
       </q-card-section>
     </q-card>
@@ -461,18 +246,11 @@
       <q-separator inset />
       <q-card-section class="row items-center">
         <span class="q-mx-sm">
-          Voulez-vous vraiment supprimer cette propriété !</span
-        >
+          Voulez-vous vraiment supprimer cette propriété !</span>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn
-          @click="deleteProperty"
-          flat
-          label="Confirmer"
-          color="red"
-          v-close-popup
-        />
+        <q-btn @click="deleteProperty" flat label="Confirmer" color="red" v-close-popup />
         <q-btn flat label="Annuler" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
@@ -481,11 +259,7 @@
 
   <!-- start of image preview dialog-->
   <q-dialog v-model="imageDialog">
-    <q-card class="full-width">
-      <q-card-section>
-        <q-img draggable="false" :src="'http://localhost:3000/' + imgUrl" />
-      </q-card-section>
-    </q-card>
+    <q-img draggable="false" :src="'http://localhost:3000/' + imgUrl" />
   </q-dialog>
   <!-- end of image preview dialog-->
 </template>
@@ -610,7 +384,7 @@ export default {
         image.value =
         localisation.value =
         optionsCategorie.value =
-          null;
+        null;
       date.value = today;
       formProperty.value.resetValidation();
     }
@@ -782,10 +556,7 @@ export default {
       if (updatedProperty.value.localisation)
         formData.append('localisation', updatedProperty.value.localisation);
 
-      const { data } = await axios.patch(
-        'property/' + updatedProperty.value._id,
-        formData
-      );
+      const { data } = await axios.patch('property/' + updatedProperty.value._id, formData);
 
       if (!data) {
         $q.notify({
@@ -805,9 +576,7 @@ export default {
 
     // delete property function
     const deleteProperty = async () => {
-      const { data } = await axios.delete(
-        'property/' + updatedProperty.value._id
-      );
+      const { data } = await axios.delete('property/' + updatedProperty.value._id);
 
       if (!data) {
         $q.notify({

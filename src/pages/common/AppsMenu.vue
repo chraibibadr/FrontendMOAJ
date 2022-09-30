@@ -7,15 +7,8 @@
           <q-menu transition-show="jump-down" transition-hide="scale">
             <div class="row no-wrap q-pa-md justify-center items-center">
               <q-list class="rounded-borders text-primary">
-                <q-item
-                  clickable
-                  v-ripple
-                  :active="link === 'profile'"
-                  @click="link = 'profile'"
-                  to="profile"
-                  exact
-                  active-class="text-white bg-blue-9"
-                >
+                <q-item clickable v-ripple :active="link === 'profile'" @click="link = 'profile'" to="profile" exact
+                  active-class="text-white bg-blue-9">
                   <q-item-section avatar>
                     <q-icon name="manage_accounts" />
                   </q-item-section>
@@ -25,13 +18,8 @@
 
                 <q-separator spaced />
 
-                <q-item
-                  clickable
-                  v-ripple
-                  :active="link === 'settings'"
-                  @click="link = 'settings'"
-                  active-class="text-white bg-blue-9"
-                >
+                <q-item clickable v-ripple :active="link === 'settings'" @click="link = 'settings'"
+                  active-class="text-white bg-blue-9">
                   <q-item-section avatar>
                     <q-icon name="settings" />
                   </q-item-section>
@@ -51,14 +39,7 @@
                   @{{ username }}
                 </div>
 
-                <q-btn
-                  color="primary"
-                  label="Déconnecter"
-                  push
-                  size="sm"
-                  v-close-popup
-                  @click="logout"
-                />
+                <q-btn color="primary" label="Déconnecter" push size="sm" v-close-popup @click="logout" />
               </div>
             </div>
           </q-menu>
@@ -76,37 +57,25 @@
                   <div>Gestion des utilisateurs</div>
                 </q-btn>
               </div>
-              <div
-                class="col-xs-12 col-sm-6 col-md-3"
-                v-if="role || permissions.includes('App2')"
-              >
+              <div class="col-xs-12 col-sm-6 col-md-3" v-if="role || permissions.includes('App2')">
                 <q-btn class="fit" color="blue" stack to="incomes/expends">
                   <q-icon size="8em" name="point_of_sale" />
                   <div>Programme des revenus</div>
                 </q-btn>
               </div>
-              <div
-                class="col-xs-12 col-sm-6 col-md-3"
-                v-if="role || permissions.includes('App1')"
-              >
-                <q-btn class="fit" color="blue" stack >
+              <div class="col-xs-12 col-sm-6 col-md-3" v-if="role || permissions.includes('App1')">
+                <q-btn class="fit" color="blue" stack to="products">
                   <q-icon size="8em" name="inventory" />
                   <div>Stock</div>
                 </q-btn>
               </div>
-              <div
-                class="col-xs-12 col-sm-6 col-md-3"
-                v-if="role || permissions.includes('App4')"
-              >
+              <div class="col-xs-12 col-sm-6 col-md-3" v-if="role || permissions.includes('App4')">
                 <q-btn class="fit" color="blue" stack to="property">
                   <q-icon size="8em" name="room_preferences" />
                   <div>Propriété privé/publique</div>
                 </q-btn>
               </div>
-              <div
-                class="col-xs-12 col-sm-6 col-md-3"
-                v-if="role || permissions.includes('App3')"
-              >
+              <div class="col-xs-12 col-sm-6 col-md-3" v-if="role || permissions.includes('App3')">
                 <q-btn class="fit" color="blue" stack to="demands">
                   <q-icon size="8em" name="desk" />
                   <div>Bureau de contrôle</div>

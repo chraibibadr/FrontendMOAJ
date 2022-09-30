@@ -2,14 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
           {{ route.meta.title || 'Gestion des stocks' }}
@@ -18,13 +11,8 @@
           <q-menu transition-show="jump-down" transition-hide="scale">
             <div class="row no-wrap q-pa-md justify-center items-center">
               <q-list class="rounded-borders text-primary">
-                <q-item
-                  clickable
-                  v-ripple
-                  :active="link === 'profile'"
-                  @click="link = 'profile'"
-                  active-class="text-white bg-blue-9"
-                >
+                <q-item clickable v-ripple :active="link === 'profile'" @click="link = 'profile'"
+                  active-class="text-white bg-blue-9">
                   <q-item-section avatar>
                     <q-icon name="manage_accounts" />
                   </q-item-section>
@@ -34,13 +22,8 @@
 
                 <q-separator spaced />
 
-                <q-item
-                  clickable
-                  v-ripple
-                  :active="link === 'settings'"
-                  @click="link = 'settings'"
-                  active-class="text-white bg-blue-9"
-                >
+                <q-item clickable v-ripple :active="link === 'settings'" @click="link = 'settings'"
+                  active-class="text-white bg-blue-9">
                   <q-item-section avatar>
                     <q-icon name="settings" />
                   </q-item-section>
@@ -60,14 +43,7 @@
                   @{{ username }}
                 </div>
 
-                <q-btn
-                  color="primary"
-                  label="Déconnecter"
-                  push
-                  size="sm"
-                  v-close-popup
-                  @click="logout"
-                />
+                <q-btn color="primary" label="Déconnecter" push size="sm" v-close-popup @click="logout" />
               </div>
             </div>
           </q-menu>
@@ -80,15 +56,9 @@
         <q-list>
           <q-item-label header> Menu </q-item-label>
           <template v-for="(menuItem, index) in linksList" :key="index">
-            <q-item
-              :to="menuItem.link"
-              exact
-              clickable
-              v-ripple
-              v-if="
-                route.path.includes(menuItem.context) || menuItem.context == '/'
-              "
-            >
+            <q-item :to="menuItem.link" exact clickable v-ripple v-if="
+              route.path.includes(menuItem.context) || menuItem.context == '/'
+            ">
               <q-item-section avatar>
                 <q-icon :name="menuItem.icon" />
               </q-item-section>
@@ -96,7 +66,7 @@
                 {{ menuItem.label }}
               </q-item-section>
             </q-item>
-            <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+            <q-separator :key="'sep' + index" v-if="menuItem.separator && route.path.includes(menuItem.context)" />
           </template>
         </q-list>
       </q-scroll-area>
@@ -145,6 +115,20 @@ const linksList = [
     separator: true,
   },
   {
+    context: 'product',
+    label: 'Stock',
+    icon: 'inventory_2',
+    link: '/products',
+    separator: false,
+  },
+  {
+    context: 'product',
+    label: 'Configuration',
+    icon: 'settings',
+    link: '/products/config',
+    separator: true,
+  },
+  {
     context: '/',
     label: 'Les applications',
     icon: 'widgets',
@@ -154,7 +138,7 @@ const linksList = [
 ];
 
 export default {
-  name: 'SecondLayout',
+  name: 'MainLayout',
   setup() {
     const store = useIsAuthenticated();
     const username = store.getUsername;
@@ -163,17 +147,10 @@ export default {
     const leftDrawerOpen = ref(false);
 
     setInterval(async () => {
-      const { status, data } = await axios.post(
-        'auth/refresh',
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      const { status, data } = await axios.post('auth/refresh', {}, { withCredentials: true, });
 
       if (status === 202) {
-        axios.defaults.headers.common['Authorization'] =
-          'Bearer ' + data.access_token;
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
 
         console.log('SET TRUE (LAYOUT)');
 
@@ -184,9 +161,7 @@ export default {
     return {
       linksList,
       leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      toggleLeftDrawer() { leftDrawerOpen.value = !leftDrawerOpen.value; },
       username,
       logout,
       link: ref(null),
