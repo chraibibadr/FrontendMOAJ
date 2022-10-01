@@ -92,10 +92,10 @@
                                 <q-tooltip class="bg-light-blue-10 text-white" id="app">
                                     <strong v-if="props.row.role=='admin'">Toutes les applications <br /> sont
                                         <em>autorisées</em></strong>
-                                    <span v-for="p in props.row.permissions" :key="p">
+                                    <span v-else v-for="p in props.row.permissions" :key="p">
                                         <strong v-if="p=='App1'"> Application de <em>stock</em></strong>
                                         <strong v-else-if="p=='App2'"> Programme de <em>revenus</em></strong>
-                                        <strong v-else-if="p=='App3'"> Bureau de <em>controle</em></strong>
+                                        <strong v-else-if="p=='App3'"> Bureau de <em>contrôle</em></strong>
                                         <strong v-else> Proprieté privé <em>public</em></strong>
                                         <br />
                                     </span>

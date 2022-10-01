@@ -120,7 +120,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/incomes/expends',
     meta: {
-      title: 'Gestion des Revenus et depenses',
+      title: 'Gestion des Revenus et Dépenses',
       isAuthenticated: true,
       App2: true
     },

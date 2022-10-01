@@ -8,8 +8,9 @@ import { util } from 'webpack';
         <q-card-section style=" background-color:rgb(244,246,250) ;  color: rgb(116,124,128) ;
                            ">
           <div class="row  justify-between">
-            <div class="  q-my-sm text-bold col-sm-12 col-md-9  " style="font-family:Georgia ;font-size: 16px;">Nouveau
-              Utilsateur </div>
+            <div class="  q-my-sm text-bold col-sm-12 col-md-9  " style="font-family:Georgia ;font-size: 16px;">
+              Modification
+              D'Un Utilsateur </div>
             <div>
               <q-icon name=" x edit" size="16px" class="q-mb-sm" color="light-blue-10"> </q-icon>
               <q-icon name="person" color="light-blue-10" size="28px"></q-icon>
@@ -194,7 +195,7 @@ import { util } from 'webpack';
                   </div>
                   <div class="col-12 col-md-5">
                     <div class="row q-mb-lg">
-                      <label for="" class="col-4  text-subtitle2 text-grey-6">Bureau de controle</label>
+                      <label for="" class="col-4  text-subtitle2 text-grey-6">Bureau de contrôle</label>
                       <q-select class=" col-8 " standout="bg-grey text-white" v-model="BDC" option-label="name"
                         :options="Permission" label="Permissions" />
                     </div>

@@ -195,7 +195,7 @@ import { util } from 'webpack';
                   </div>
                   <div class="col-12 col-md-5">
                     <div class="row q-mb-lg">
-                      <label for="" class="col-4  text-subtitle2 text-grey-6">Bureau de controle</label>
+                      <label for="" class="col-4  text-subtitle2 text-grey-6">Bureau de contrôle</label>
                       <q-select class=" col-8 " standout="bg-grey text-white" v-model="BDC" option-label="name"
                         :options="Permission" label="Permissions" />
                     </div>
