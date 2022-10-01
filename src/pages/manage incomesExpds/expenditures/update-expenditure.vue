@@ -1,203 +1,206 @@
 <template>
-    <q-page class="row justify-center items-center" >
-        <div class="row q-pa-lg fit justify-center items-center " >
-         
-            <q-card round class="shadow-15 col-9  "  style="border:1px transparent ;border-radius: 20px;">
-              <q-card-section  style=" background-color:rgb(244,246,250) ;  color: rgb(116,124,128) ;
-                               ">
-                <div class="row  justify-between">
-                  <div class="  q-my-sm  col-10 text-bold  " style="font-family:Georgia ;font-size: 16px;">Modification D'Une Dépense</div>
-                      <q-icon color="light-blue-10" name="monetization_on" size="30px" />
-                </div>
-              </q-card-section>
-              <q-separator  />
-              <q-card-section class="" >
-                <q-form class=" q-py-lg  "  @submit.prevent="create"  >
-                  <div class="row q-ma-0  justify-between q-pb-lg">
-                    <q-input class="col-5" filled v-model="state.dateE" tandout="bg-grey text-white" :class="{'error':v$.dateE.$error}">
-                      <template  v-slot:prepend >
-                            <q-icon   v-if="v$.dateE.$error" round   name="info" color="red" >
-                            <q-tooltip  class="bg-red-5"  :offset="[10, 10]">
-                                Ce champ est important veuillez le remplire(date et heure)
-                            </q-tooltip>
-                            </q-icon>
-                            <q-icon v-else-if="!v$.dateE.$error" name="access_time" class="cursor-pointer">
-                          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                            <q-time v-model="state.dateE" mask="YYYY-MM-DD HH:mm" format24h>
-                              <div class="row items-center justify-end">
-                                <q-btn v-close-popup label="Fermer" color="primary" flat />
-                              </div>
-                            </q-time>
-                          </q-popup-proxy>
-                        </q-icon>
-       
-                    </template>
+  <q-page class="row justify-center items-center">
+    <div class="row q-pa-lg fit justify-center items-center ">
 
-                      <template v-slot:append>
-                        <q-icon   name="event" class="cursor-pointer">
-                          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                            <q-date v-model="state.dateE" mask="YYYY-MM-DD HH:mm">
-                              <div class="row items-center justify-end">
-                                <q-btn v-close-popup label="Fermer" color="primary" flat />
-                              </div>
-                            </q-date>
-                          </q-popup-proxy>
-                        </q-icon>
-                        
-                      </template>
-                    </q-input>
-                    <q-input class="  col-5" v-model="state.amountE" standout="bg-grey text-white" :class="{'error':v$.amountE.$error}"  label="Montant">
-                     
-                        <template v-if="v$.amountE.$error"   v-slot:prepend>
-                        <q-icon round   name="info" color="red" >
-                        <q-tooltip  v-if="v$.amountE.required.$invalid" class="bg-red-5"  :offset="[10, 10]">
-                            Ce champ est important veuillez le remplire
-                        </q-tooltip>
-                        </q-icon>
-                      </template>
-                   </q-input>
-                  </div>
-                   <div class="row q-ma-0   q-pb-lg">
-    
-                   <q-select class=" col-5  "  standout="bg-grey text-white"  v-model="state.typeE" 
-                    label="Type"  :class="{'error':v$.typeE.$error}"
-                    :options="types"
-                    option-label="name"
-                     >
-                    <template v-if="v$.typeE.$error"   v-slot:prepend>
-                        <q-icon round  name="info" color="red" >
-                        <q-tooltip  v-if="v$.typeE.required.$invalid" class="bg-red-5"  :offset="[10, 10]">
-                            Ce champ est important veuillez le remplire
-                        </q-tooltip>
-                        </q-icon>
-               </template>
-                   </q-select>
-    
-                   </div>
-    
-                  
-    
-    
-    
-                   
-                  
-                   <div class="row  justify-evenly q-mt-md  justify-end">
-                          <q-btn class="col-2 text-bold " @click="reset()" type="button"  outline  color="light-blue-10" label="Annuler" />
-                          <q-btn class="col-2 bg-light-blue-10 "  color="wight"  type="submit" label="Modifier" />
-                 </div>
-                </q-form>
-              </q-card-section>
-    
-            </q-card>
-        </div>
-        <div class="q-pa-md">
-       
+      <q-card round class="shadow-15 col-9  " style="border:1px transparent ;border-radius: 20px;">
+        <q-card-section style=" background-color:rgb(244,246,250) ;  color: rgb(116,124,128) ;
+                               ">
+          <div class="row  justify-between">
+            <div class="  q-my-sm  col-10 text-bold  " style="font-family:Georgia ;font-size: 16px;">Modification D'Une
+              Dépense</div>
+            <q-icon color="light-blue-10" name="monetization_on" size="30px" />
           </div>
-      </q-page>
-    </template>
-    <script>
+        </q-card-section>
+        <q-separator />
+        <q-card-section class="">
+          <q-form class=" q-py-lg  " @submit.prevent="create">
+            <div class="row q-ma-0  justify-between q-pb-lg">
+              <q-input class="col-5" filled v-model="state.dateE" tandout="bg-grey text-white"
+                :class="{'error':v$.dateE.$error}">
+                <template v-slot:prepend>
+                  <q-icon v-if="v$.dateE.$error" round name="info" color="red">
+                    <q-tooltip class="bg-red-5" :offset="[10, 10]">
+                      Ce champ est important veuillez le remplire(date et heure)
+                    </q-tooltip>
+                  </q-icon>
+                  <q-icon v-else-if="!v$.dateE.$error" name="access_time" class="cursor-pointer">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-time v-model="state.dateE" mask="YYYY-MM-DD HH:mm" format24h>
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Fermer" color="primary" flat />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+
+                </template>
+
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-date v-model="state.dateE" mask="YYYY-MM-DD HH:mm">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Fermer" color="primary" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+
+                </template>
+              </q-input>
+              <q-input class="  col-5" v-model="state.amountE" type="number" standout="bg-grey text-white"
+                :class="{'error':v$.amountE.$error}" label="Montant">
+
+                <template v-if="v$.amountE.$error" v-slot:prepend>
+                  <q-icon round name="info" color="red">
+                    <q-tooltip v-if="v$.amountE.required.$invalid" class="bg-red-5" :offset="[10, 10]">
+                      Ce champ est important veuillez le remplire
+                    </q-tooltip>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+            <div class="row q-ma-0   q-pb-lg">
+
+              <q-select class=" col-5  " standout="bg-grey text-white" v-model="state.typeE" label="Type"
+                :class="{'error':v$.typeE.$error}" :options="types" option-label="name">
+                <template v-if="v$.typeE.$error" v-slot:prepend>
+                  <q-icon round name="info" color="red">
+                    <q-tooltip v-if="v$.typeE.required.$invalid" class="bg-red-5" :offset="[10, 10]">
+                      Ce champ est important veuillez le remplire
+                    </q-tooltip>
+                  </q-icon>
+                </template>
+              </q-select>
+
+            </div>
+
+
+
+
+
+
+
+            <div class="row  justify-evenly q-mt-md  justify-end">
+              <q-btn class="col-2 text-bold " @click="reset()" type="button" outline color="light-blue-10"
+                label="Annuler" />
+              <q-btn class="col-2 bg-light-blue-10 " color="wight" type="submit" label="Modifier" />
+            </div>
+          </q-form>
+        </q-card-section>
+
+      </q-card>
+    </div>
+    <div class="q-pa-md">
+
+    </div>
+  </q-page>
+</template>
+<script>
 import useVuelidate from '@vuelidate/core';
 import { useQuasar } from 'quasar';
-import {  getAll, getById, updateObject } from 'src/util/methods';
-import { required} from '@vuelidate/validators';
+import { getAll, getById, updateObject } from 'src/util/methods';
+import { required } from '@vuelidate/validators';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-           export default{
-      setup(){
+export default {
+  setup() {
 
-        const types=ref([]);
-        const state=ref({
-        amountE:'',
-        dateE:'',
-        typeE:'',
-       });
-       const $q = useQuasar();
-       const $route=useRoute();
-      const $router=useRouter();
+    const types = ref([]);
+    const state = ref({
+      amountE: '',
+      dateE: '',
+      typeE: '',
+    });
+    const $q = useQuasar();
+    const $route = useRoute();
+    const $router = useRouter();
 
-/*******************interaction with db********************************* */
+    /*******************interaction with db********************************* */
 
-async function getUserById(){
-         await getById('expenditures',$route.params.id).then((res)=>{
-            state.value=res.data;
-        
-            const array=state.value.dateE.split('T')
-         
-            state.value.dateE=array[0]+' '+array[1].split('.')[0].split(':')[0]+':'+array[1].split('.')[0].split(':')[1];
+    async function getUserById() {
+      await getById('expenditures', $route.params.id).then((res) => {
+        state.value = res.data;
 
-         });}
-      getUserById();
-   async function getData(url) {
-           await getAll(url).then((res)=>{
+        const array = state.value.dateE.split('T')
 
-           types.value = res.data
-            
-       
-    });}
+        state.value.dateE = array[0] + ' ' + array[1].split('.')[0].split(':')[0] + ':' + array[1].split('.')[0].split(':')[1];
+
+      });
+    }
+    getUserById();
+    async function getData(url) {
+      await getAll(url).then((res) => {
+
+        types.value = res.data
+
+
+      });
+    }
 
     getData('types/get')
-  
-       const create=function(){
-       
-        v$.value.$validate();
-        if(!v$.value.$error){
-          const saveDate= state.value.dateE;
-          const array=state.value.dateE.split(' ');
-          state.value.dateE=array[0]+'Z'+array[1];
-        
-           updateObject('expenditures',state.value,$route.params.id).then((res)=>{
-       
-          if(res.status==200){
-            
-          
+
+    const create = function () {
+
+      v$.value.$validate();
+      if (!v$.value.$error) {
+        const saveDate = state.value.dateE;
+        const array = state.value.dateE.split(' ');
+        state.value.dateE = array[0] + 'Z' + array[1];
+
+        updateObject('expenditures', state.value, $route.params.id).then((res) => {
+
+          if (res.status == 200) {
+
+
             $q.notify({
-                                       message:'Cette dépense a été modifier avec succés',
-                                         color: 'light-blue-10',
-                                         icon: 'done',
-                                         position:'top',
-                                         badgeClass: ' bg-light-blue-8'
-                 });
-                 $router.push({ path: '/incomes/expends/expds' });
-          } 
-            else{
-              state.value.dateE=saveDate;
-              $q.notify({
-                                   message: 'Une erreur a été survenue lors de la transmition ',
-                                     color: 'red-5',
-                                     icon: 'gpp_bad',
-                                      position:'top'
-                   });
-            }
-                        })
-      
-       
-      
-        }
+              message: 'Cette dépense a été modifier avec succés',
+              color: 'light-blue-10',
+              icon: 'done',
+              position: 'top',
+              badgeClass: ' bg-light-blue-8'
+            });
+            reset();
+          }
+          else {
+            state.value.dateE = saveDate;
+            $q.notify({
+              message: 'Une erreur a été survenue lors de la transmition ',
+              color: 'red-5',
+              icon: 'gpp_bad',
+              position: 'top'
+            });
+          }
+        })
+
+
+
       }
+    }
 
 
-      // validation
-     const rules = {
-     amountE: { required }, 
+    // validation
+    const rules = {
+      amountE: { required },
       dateE: { required },
-     typeE:{required} ,
-    
-    }
-     const v$ = useVuelidate(rules, state);
-    
-     //helping function
-     function reset(){
-      $router.push({ path: '/exps' });
-     }
-     return{v$,state,types,create,reset}
-    }
-}
-    </script>
+      typeE: { required },
 
-    <style>
-        .error{
-      outline: 2px solid red;
-     border-radius: 3px;
-       }
-    </style>
+    }
+    const v$ = useVuelidate(rules, state);
+
+    //helping function
+    function reset() {
+      $router.push({ path: '/incomes/expends/expds' });
+    }
+    return { v$, state, types, create, reset }
+  }
+}
+</script>
+
+<style>
+.error {
+  outline: 2px solid red;
+  border-radius: 3px;
+}
+</style>

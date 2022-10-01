@@ -11,7 +11,7 @@
           <q-menu transition-show="jump-down" transition-hide="scale">
             <div class="row no-wrap q-pa-md justify-center items-center">
               <q-list class="rounded-borders text-primary">
-                <q-item clickable v-ripple :active="link === 'profile'" @click="link = 'profile'"
+                <q-item clickable v-ripple :active="link === 'profile'" @click="link = 'profile'" to="/profile"
                   active-class="text-white bg-blue-9">
                   <q-item-section avatar>
                     <q-icon name="manage_accounts" />
