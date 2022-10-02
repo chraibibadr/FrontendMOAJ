@@ -440,7 +440,7 @@ export default {
       matricule, PPP, iscliked, copy, reset,
       password, Roles, state, v$,
       Permission, departments,
-      show, stock, prgRevenus, BDC, fonctions
+      show, stock, prgRevenus, BDC, fonctions,
 
     }
   }

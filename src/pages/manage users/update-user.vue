@@ -41,7 +41,7 @@ import { util } from 'webpack';
               </div>
               <div class="col-12 col-md-5">
                 <div class="row justify-between">
-                  <q-input class=" col-8 col-md-9   " disable standout="bg-grey text-white" v-model="state.password"
+                  <q-input class=" col-8 col-md-9   " disable standout="bg-grey text-white" v-model="password"
                     label="Password" />
                   <div class="col-2   col-sm-1 items-center ">
                     <q-btn @click="getPassword()" size="12px" class="q-mt-sm " round flat>
@@ -49,7 +49,7 @@ import { util } from 'webpack';
                     </q-btn>
                   </div>
                   <div class="col-2    items-center  ">
-                    <q-btn @click="copy(state.password)" size="12px" class="q-mt-sm " round flat>
+                    <q-btn @click="copy(password)" size="12px" class="q-mt-sm " round flat>
                       <q-icon size="22px" name=" content_copy" color="grey-9"></q-icon>
                     </q-btn>
                   </div>
@@ -209,7 +209,14 @@ import { util } from 'webpack';
 
               </fieldset>
             </q-card-section>
+            <div class="q-pa-md row">
+              <div>
+                <label class="text-bold text-light-blue-9">Vous voulez modifier le mot de passe?</label>
+                <q-radio v-model="updatePass" color='light-blue-10' :val="true" label="Oui" />
+                <q-radio v-model="updatePass" color='light-blue-10' :val="false" label="Non" />
 
+              </div>
+            </div>
             <div class="row  justify-evenly ">
               <q-btn class="col-5 col-sm-3 col-md-2 text-bold " @click="reset()" type="button" outline
                 color="light-blue-10" label="Annuler" />
@@ -254,10 +261,11 @@ export default {
       role: '',
       phone: '',
       matricule: '',
-      password: '',
+
 
 
     });
+    const password = ref('');
     const passwordLength = 10;
     const matriculeLengthP1 = 2;
     const matriculeLengthP2 = 6;
@@ -274,7 +282,7 @@ export default {
     const $q = useQuasar();
     const $route = useRoute();
     const $router = useRouter();
-
+    const updatePass = ref(false);
 
     /********Interaction with DB******** */
     //get from db    
@@ -330,7 +338,7 @@ export default {
         if (state.value.role == 'user') {
           Object.assign(state.value, { permissions: permissions });
         }
-
+        if (updatePass.value) Object.assign(state.value, { password: password.value });
         updateObject('users', state.value, $route.params.id).then((res) => {
           if (res.status == 201) {
             iscliked.value = false;
@@ -369,7 +377,7 @@ export default {
       for (var i = 0; i < passwordLength; i++) {
         generatedPassword += charsPass.charAt(Math.floor(Math.random() * charsPass.length));
       }
-      state.value.password = generatedPassword;
+      password.value = generatedPassword;
     }
     getPassword();
     // generate matricule
@@ -448,9 +456,9 @@ export default {
     return {
       update, validatePermissions, getPassword, getMatricule,
       PPP, iscliked, copy, reset,
-      Roles, state, v$,
+      Roles, state, v$, password,
       Permission, departments,
-      show, stock, prgRevenus, BDC, fonctions
+      show, stock, prgRevenus, BDC, fonctions, updatePass
 
     }
   }

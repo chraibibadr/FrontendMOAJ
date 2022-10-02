@@ -129,6 +129,7 @@
 
 
               </div>
+
               <div class="row  justify-center ">
                 <q-btn class="col-12 bg-light-blue-10 " color="wight" type="submit" label="Rénistialiser" />
               </div>
