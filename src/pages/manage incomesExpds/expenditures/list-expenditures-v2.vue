@@ -28,7 +28,8 @@
           <q-space />
           <q-select class="col-4 " :popup-content-style="{ color: 'grey' }" color="light-blue-9" chips-color="yellow"
             rounded outlined dense v-model="filterBy" :options="options"
-            :display-value="`filtrer par: ${filterBy ?  filterBy.name: '*none*'}`" option-label="name" />
+            :display-value="`filtrer par: ${filterBy ?  filterBy.name: '*none*'}`" option-label="name"
+            @update:model-value="() =>{ if(filter) $refs.table.requestServerInteraction()}" />
           <q-space />
           <div class=" flex flex-center justify-between">
 
@@ -43,7 +44,7 @@
             <q-th class="q-mt-sm row" style="font-family:Georgia; font-weight: bold;  color: rgb(116,124,128) ;">
               <span class="col-1 col-md-1">Date</span>
               <span class="col-sm-8 col-6 col-md-7  q-pl-lg">Type</span>
-              <span class="col-lg-0 col-md-1 " @click="sortByColumn('amount')"> Montant
+              <span class="col-lg-0 col-md-1 " @click="sortByColumn('amountE')"> Montant
                 <span v-if="sortColumn == 'amountE'" class="material-icons cursor-pointer">{{arrowIconName}}</span>
                 <span v-else class="material-icons cursor-pointer">sort</span>
               </span>

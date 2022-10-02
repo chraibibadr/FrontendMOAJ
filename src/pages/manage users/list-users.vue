@@ -28,7 +28,8 @@
                     <q-space />
                     <q-select dense class="col-4 " :popup-content-style="{ color: 'grey' }" color="light-blue-9" rounded
                         outlined v-model="filterBy" :options="options"
-                        :display-value="`filtrer par: ${filterBy ?  filterBy.name: '*none*'}`" option-label="name" />
+                        :display-value="`filtrer par: ${filterBy ?  filterBy.name: '*none*'}`" option-label="name"
+                        @update:model-value="() =>{ if(filter) $refs.table.requestServerInteraction()}" />
                     <q-space />
                     <div class=" ">
 
@@ -270,6 +271,7 @@ export default {
             await getAll('users/get', page, store.id + '/', filterBy.value.value, filter.value, sort, colSort).then(res => {
 
                 if (res.status == 200) {
+
                     originalRows.value = res.data.docs;
                     pagination.value.rowsNumber = res.data.totalDocs;
                 }
@@ -323,6 +325,7 @@ export default {
 
         /************** sorting  ************** */
         const sortByColumn = (columnName) => {
+
             if (columnName != 'role' &&
                 columnName != 'email' && columnName != 'permissions'
                 && columnName != 'action' && columnName != 'phone') {

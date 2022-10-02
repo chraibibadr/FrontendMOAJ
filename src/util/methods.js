@@ -6,9 +6,9 @@ export function createObject(url,object){
 }
  export  function getAll(url,page,idAuth,column,filter,sort,colSort){
   const p=idAuth?page+'/'+idAuth:page?page:'';
-  const params=filter && sort?column+'/'+filter+'/s/'+sort:filter?column+'/'+filter+'/s':colSort?
+  const params=filter && sort && !colSort?column+'/'+filter+'/s/'+sort:filter?column+'/'+filter+'/s':colSort?
   's/'+sort+'/'+colSort
-  :sort?'s/'+sort:'';
+  :sort?'s/'+sort:colSort && filter?column+'/'+filter+'/s/'+sort+'/'+colSort:'';
        return    axios.get(`${server.baseURL}/${url}/${p}${params}`,);
     }
 

@@ -82,9 +82,9 @@
 
 
             <div class="row  justify-evenly q-mt-md  justify-end">
-              <q-btn class="col-2 text-bold " @click="reset()" type="button" outline color="light-blue-10"
+              <q-btn class="col-md-2 col-4  text-bold " @click="reset()" type="button" outline color="light-blue-10"
                 label="Annuler" />
-              <q-btn class="col-2 bg-light-blue-10 " color="wight" type="submit" label="Modifier" />
+              <q-btn class="col-md-2 col-4 bg-light-blue-10 " color="wight" type="submit" label="Modifier" />
             </div>
           </q-form>
         </q-card-section>

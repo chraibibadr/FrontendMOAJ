@@ -28,7 +28,8 @@
           <q-space />
           <q-select class="col-4 " :popup-content-style="{ color: 'grey' }" color="light-blue-9" chips-color="yellow"
             rounded outlined dense v-model="filterBy" :options="options"
-            :display-value="`filtrer par: ${filterBy ?  filterBy.name: '*none*'}`" option-label="name" />
+            :display-value="`filtrer par: ${filterBy ?  filterBy.name: '*none*'}`" option-label="name"
+            @update:model-value="() =>{ if(filter) $refs.table.requestServerInteraction()}" />
           <q-space />
           <div class=" flex flex-center justify-between">
 
