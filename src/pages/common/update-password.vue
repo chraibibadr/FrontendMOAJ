@@ -233,6 +233,7 @@ export default {
       state.value.pass = '';
       state.value.newPass = '';
       state.value.confPass = '';
+      verifyPass.value = true;
       v$.value.$reset();
     }
 
