@@ -120,7 +120,7 @@
               <div v-if="props.value">
                 <q-btn @click="previewImg(props.value)" push round>
                   <q-avatar>
-                    <img draggable="false" :src="'http://localhost:3000/' + props.value" />
+                    <img :src="'http://localhost:3000/' + props.value" />
                   </q-avatar>
                 </q-btn>
               </div>
@@ -278,7 +278,7 @@
 
   <!-- start of image preview dialog-->
   <q-dialog v-model="imageDialog">
-    <q-img draggable="false" :src="'http://localhost:3000/' + imgUrl" />
+    <q-img :src="'http://localhost:3000/' + imgUrl" />
   </q-dialog>
   <!-- end of image preview dialog-->
 </template>
@@ -438,7 +438,9 @@ export default {
       formData.append('quantiteMin', qteMin.value);
       if (poids.value) formData.append('poids', poids.value);
       if (dimension.value) formData.append('dimension', dimension.value);
-      formData.append('tags[]', Object.values(tags.value));
+      Object.values(tags.value).forEach(tag => {
+        formData.append('tags[]', tag);
+      });
       formData.append('categorie', selectCategorie.value);
       formData.append('statut', selectStatut.value);
       formData.append('description', description.value);
@@ -593,12 +595,14 @@ export default {
       formData.append('quantiteMin', updatedProduct.value.qteMin);
       if (updatedProduct.value.poids) formData.append('poids', updatedProduct.value.poids);
       if (updatedProduct.value.dimension) formData.append('dimension', updatedProduct.value.dimension);
-      formData.append('tags[]', Object.values(updatedProduct.value.tags),);
+      Object.values(updatedProduct.value.tags).forEach(tag => {
+        formData.append('tags[]', tag);
+      });
       formData.append('categorie', updatedProduct.value.categorie);
       formData.append('statut', updatedProduct.value.statut);
       formData.append('description', updatedProduct.value.description);
       formData.append('commentaire', updatedProduct.value.commentaire);
-      if (image.value) formData.append('image', updatedProduct.value.image);
+      if (updatedProduct.value.image) formData.append('image', updatedProduct.value.image);
 
       const { data } = await axios.patch('product/' + updatedProduct.value._id, formData);
 

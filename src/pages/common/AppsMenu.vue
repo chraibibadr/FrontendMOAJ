@@ -15,24 +15,13 @@
 
                   <q-item-section>Profile</q-item-section>
                 </q-item>
-
-                <q-separator spaced />
-
-                <q-item clickable v-ripple :active="link === 'settings'" @click="link = 'settings'"
-                  active-class="text-white bg-blue-9">
-                  <q-item-section avatar>
-                    <q-icon name="settings" />
-                  </q-item-section>
-
-                  <q-item-section>Paramètres</q-item-section>
-                </q-item>
               </q-list>
 
               <q-separator vertical inset class="q-mx-md" />
 
               <div class="column items-center">
                 <q-avatar size="72px">
-                  <img src="https://cdn.quasar.dev/img/avatar4.jpg" />
+                  <img src="src/assets/avatar.png" />
                 </q-avatar>
 
                 <div class="q-mt-xs q-mb-md text-center text-weight-medium">
