@@ -116,7 +116,7 @@
               <div v-if="props.value">
                 <q-btn @click="previewImg(props.value)" push round>
                   <q-avatar>
-                    <img draggable="false" :src="'http://localhost:3000/' + props.value" />
+                    <img :src="'http://localhost:3000/' + props.value" />
                   </q-avatar>
                 </q-btn>
               </div>
@@ -259,7 +259,7 @@
 
   <!-- start of image preview dialog-->
   <q-dialog v-model="imageDialog">
-    <q-img draggable="false" :src="'http://localhost:3000/' + imgUrl" />
+    <q-img :src="'http://localhost:3000/' + imgUrl" />
   </q-dialog>
   <!-- end of image preview dialog-->
 </template>

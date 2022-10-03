@@ -27,7 +27,7 @@
 
               <div class="column q-pa-sm items-center">
                 <q-avatar size="72px">
-                  <img src="src/assets/profile.jpg" />
+                  <img src="src/assets/avatar.png" />
                 </q-avatar>
 
                 <div class="q-mt-xs q-mb-md text-center text-weight-medium">
@@ -50,7 +50,7 @@
         <q-list class="q-py-lg q-mb-xs text-white text-bold  bg-light-blue-10 border-rd">
 
           <template v-for="(menuItem) in essentialLinks" :key="menuItem">
-            <q-item v-if="menuItem.items?false:true" clickable v-ripple :to=menuItem.link>
+            <q-item v-if="menuItem.items?false:true" clickable v-ripple :to=menuItem.link exact>
               <q-item-section avatar>
                 <q-avatar round color="light-blue-8" style="width: 34px;" text-color="white" :icon="menuItem.icon" />
 
@@ -72,7 +72,7 @@
               <q-card class="bg-light-blue-10 q-ml-sm">
                 <q-card-section>
                   <template v-for="(item) in menuItem.items" :key="item">
-                    <q-item clickable :to="item.link" active-class="text-light-blue-6">
+                    <q-item clickable :to="item.link" exact active-class="text-light-blue-6">
                       <q-item-section avatar>
                         <q-icon color="white" size="" text-color="white" :name="item.icon" />
                       </q-item-section>
@@ -104,8 +104,8 @@
     </q-page-container>
   </q-layout>
 </template>
-  
-  
+
+
 <script>
 
 import { defineComponent, onMounted, ref } from 'vue';
